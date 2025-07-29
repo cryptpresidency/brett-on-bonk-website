@@ -408,10 +408,15 @@ document.addEventListener('DOMContentLoaded', function() {
     bgMusic.play().then(() => {
       console.log('Music started successfully from index page');
     }).catch((error) => {
-      console.log('Auto-play prevented, user needs to interact first:', error);
-      // Keep the state as true so music will start on first user interaction
-      isMusicPlaying = true;
-      musicBtn.textContent = '🔇';
+      console.log('Auto-play prevented, will start on first user interaction:', error);
+      // Listen for first user interaction to start music
+      const startMusicOnInteraction = () => {
+        bgMusic.play().then(() => {
+          updateButton();
+        });
+        window.removeEventListener('pointerdown', startMusicOnInteraction);
+      };
+      window.addEventListener('pointerdown', startMusicOnInteraction);
     });
   } else {
     bgMusic.pause();

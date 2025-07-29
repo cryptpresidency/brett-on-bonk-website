@@ -10,20 +10,14 @@ const percentageOwnedDisplay = document.getElementById('percentage-owned');
 // Comparison buttons
 const ethMcBtn = document.getElementById('eth-mc-btn');
 const baseMcBtn = document.getElementById('base-mc-btn');
-const tokensPerSolInput = document.getElementById('tokens-per-sol');
-const solPriceInput = document.getElementById('sol-price-input');
 
 // Method buttons
 const marketCapBtn = document.getElementById('method-marketcap');
-const solPairBtn = document.getElementById('method-solpair');
 const marketCapMethod = document.getElementById('marketcap-method');
-const solPairMethod = document.getElementById('solpair-method');
 
 // Default values
 let currentMarketCap = 1000000; // Default market cap $1M
 let totalSupply = 1000000000; // 1 billion BRETT tokens total supply
-let tokensPerSol = 5000; // Default: 5000 tokens per 1 SOL
-let solPrice = 180; // Default SOL price $180
 let currentMethod = 'marketcap'; // Current calculation method
 
 // ETH and BASE market cap data (ATH values)
@@ -34,8 +28,6 @@ let baseMc = 915950000; // $915.95M BASE ATH market cap
 function initCalculator() {
     // Set default values
     marketCapInput.value = currentMarketCap;
-    tokensPerSolInput.value = tokensPerSol;
-    solPriceInput.value = solPrice;
     updateTotalSupplyDisplay();
     
     // Add event listeners
@@ -44,21 +36,10 @@ function initCalculator() {
         currentMarketCap = parseFloat(this.value) || 0;
         calculateValue();
     });
-    tokensPerSolInput.addEventListener('input', function() {
-        tokensPerSol = parseFloat(this.value) || 0;
-        calculateValue();
-    });
-    solPriceInput.addEventListener('input', function() {
-        solPrice = parseFloat(this.value) || 0;
-        calculateValue();
-    });
     
     // Method switching
     marketCapBtn.addEventListener('click', function() {
         switchMethod('marketcap');
-    });
-    solPairBtn.addEventListener('click', function() {
-        switchMethod('solpair');
     });
     
     // Comparison buttons
@@ -76,11 +57,9 @@ function switchMethod(method) {
     
     // Update button states
     marketCapBtn.classList.toggle('active', method === 'marketcap');
-    solPairBtn.classList.toggle('active', method === 'solpair');
     
     // Show/hide method sections
     marketCapMethod.style.display = method === 'marketcap' ? 'block' : 'none';
-    solPairMethod.style.display = method === 'solpair' ? 'block' : 'none';
     
     // Recalculate
     calculateValue();
@@ -107,15 +86,6 @@ function calculateValue() {
         
         console.log(`Market Cap Method: ${brettAmount.toLocaleString()} BRETT / ${totalSupply.toLocaleString()} = ${(ownershipPercentage * 100).toFixed(4)}% of $${marketCap.toLocaleString()} = $${usdValue.toFixed(2)}`);
         
-    } else if (currentMethod === 'solpair') {
-        // SOL Pair Method
-        const tokenPriceInSol = 1 / tokensPerSol; // Price per token in SOL
-        const tokenPriceInUsd = tokenPriceInSol * solPrice; // Price per token in USD
-        usdValue = brettAmount * tokenPriceInUsd;
-        
-        console.log(`SOL Pair Method: 1/${tokensPerSol} = ${tokenPriceInSol.toFixed(6)} SOL per token`);
-        console.log(`Token price: ${tokenPriceInSol.toFixed(6)} SOL × $${solPrice} = $${tokenPriceInUsd.toFixed(6)} per token`);
-        console.log(`Total value: ${brettAmount.toLocaleString()} tokens × $${tokenPriceInUsd.toFixed(6)} = $${usdValue.toFixed(2)}`);
     }
     
     // Format the result
@@ -209,8 +179,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add some helpful placeholder text
     brettAmountInput.placeholder = 'e.g., 1000000 for 1M BRETT tokens';
     marketCapInput.placeholder = 'e.g., 1000000 for $1M market cap';
-    tokensPerSolInput.placeholder = 'e.g., 5000 tokens for 1 SOL';
-    solPriceInput.placeholder = 'e.g., 180 for $180 SOL price';
     
     // Focus on the input for better UX
     brettAmountInput.focus();
