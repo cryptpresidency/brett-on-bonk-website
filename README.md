@@ -4,7 +4,7 @@ Welcome to the official Brett on Bonk website! This is a comprehensive web platf
 
 ## 🎮 Features
 
-- **Interactive Games**: Hangman, Bonk the Brett, Trading Simulator
+- **Interactive Games**: Hangman, Bonk the Brett
 - **Community Tools**: Meme Generator, PFP Generator, Brett Calculator
 - **Social Integration**: Real-time X (Twitter) feed integration
 - **Background Music**: Brett's theme music
@@ -39,8 +39,7 @@ brett-on-bonk-website/
 ├── netlify/               # Netlify functions
 ├── games/                 # Game files
 │   ├── hangman.html
-│   ├── bonk-the-brett.html
-│   └── trading-simulator.html
+│   └── bonk-the-brett.html
 └── tools/                 # Utility tools
     ├── meme-generator.html
     ├── brett-calculator.html

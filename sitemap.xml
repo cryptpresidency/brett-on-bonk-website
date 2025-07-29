@@ -18,18 +18,6 @@
   
   <!-- Games -->
   <url>
-    <loc>https://brettonbonk.com/login</loc>
-    <lastmod>2024-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brettonbonk.com/trading-simulator</loc>
-    <lastmod>2024-01-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://brettonbonk.com/bonk-the-brett</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>monthly</changefreq>
