@@ -1037,7 +1037,6 @@
         font-size: 0.9rem;
       }
     }
-    }
 
     .trading-panel {
       background: rgba(255, 211, 0, 0.1);
@@ -4069,7 +4068,15 @@
           showSimulatorError('Required elements missing.');
           return;
         }
-        // ...rest of startTrading code...
+        
+        // Hide intro overlay and show trading platform
+        introOverlay.style.display = 'none';
+        tradingPlatform.style.display = 'block';
+        
+        // Initialize the trading simulator
+        this.init();
+        
+        console.log('Trading started successfully');
       }
       
       checkStopLosses() {
