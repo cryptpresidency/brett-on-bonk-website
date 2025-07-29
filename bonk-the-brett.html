@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bonk the Brett Game | Meme Coin Arcade</title>
+  <meta name="description" content="Play Bonk the Brett! Bonk Brett, score points, and join the most fun meme coin arcade online. #Brett #Bonk #Arcade">
+  <link rel="canonical" href="https://brettonbonk.com/bonk-the-brett">
+  <meta property="og:title" content="Bonk the Brett Game | Meme Coin Arcade">
+  <meta property="og:description" content="Play Bonk the Brett! Bonk Brett, score points, and join the most fun meme coin arcade online.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/bonk-the-brett">
+  <meta property="og:image" content="https://brettonbonk.com/assets/Bonked%20Brett.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Bonk the Brett Game | Meme Coin Arcade">
+  <meta name="twitter:description" content="Play Bonk the Brett! Bonk Brett, score points, and join the most fun meme coin arcade online.">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/Bonked%20Brett.svg">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #FFD300;
+      font-family: 'Bangers', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #fff;
+      text-shadow: 4px 4px 0 #000, 0 4px 16px #000;
+      font-size: 3rem;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+    .game-controls {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    .score, .timer {
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .start-btn {
+      font-family: 'Bangers', cursive, sans-serif;
+      background: #000;
+      color: #FFD300;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 12px;
+      padding: 0.7rem 2.2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      outline: none;
+      text-shadow: 2px 2px 0 #222;
+      opacity: 0.95;
+    }
+    .start-btn:active, .start-btn:focus {
+      background: #222;
+      color: #FFD300;
+    }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .hole {
+      background: transparent;
+      border-radius: 50%;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      width: 100px;
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .hole:active {
+      box-shadow: 0 2px 8px #FFD300;
+    }
+    .brett-head {
+      position: absolute;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      transition: bottom 0.2s;
+      user-select: none;
+      pointer-events: none;
+    }
+    .brett-head.up {
+      bottom: 10px;
+      pointer-events: auto;
+      cursor: pointer;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25));
+      animation: bounce 0.2s;
+    }
+    @keyframes bounce {
+      0% { bottom: -100px; }
+      100% { bottom: 10px; }
+    }
+    .game-over {
+      font-size: 2.2rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+    }
+    .scoreboard {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      margin-top: 20px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+    .scoreboard h2 {
+      color: #000;
+      text-shadow: 2px 2px 0 #FFD300;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+    .scoreboard ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+    .scoreboard li {
+      color: #000;
+      text-shadow: 1px 1px 0 #FFD300;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #FFD300;
+    }
+    .scoreboard li:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    #username-entry {
+      margin-top: 20px;
+    }
+    #username-entry label {
+      color: #000;
+      text-shadow: 1px 1px 0 #FFD300;
+      font-size: 1.2rem;
+      margin-right: 10px;
+    }
+    #username-input {
+      font-size: 1.2rem;
+      padding: 0.3rem 1rem;
+      border-radius: 8px;
+      border: none;
+      margin: 0 0.5rem;
+      text-align: center;
+    }
+    #username-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px #FFD300, 0 0 0 6px #000;
+    }
+    @media (max-width: 600px) {
+      .game-grid {
+        grid-template-columns: repeat(3, 70px);
+        grid-template-rows: repeat(3, 70px);
+        gap: 0.7rem;
+      }
+      .hole {
+        width: 70px;
+        height: 70px;
+      }
+      .brett-head, .brett-head.up {
+        width: 55px;
+        height: 55px;
+      }
+      .scoreboard {
+        padding: 15px;
+      }
+      .scoreboard h2 {
+        font-size: 1.5rem;
+      }
+      .scoreboard li {
+        font-size: 1.2rem;
+      }
+      #username-input {
+        font-size: 1rem;
+        padding: 0.2rem 0.8rem;
+      }
+      #username-entry label {
+        font-size: 1rem;
+      }
+      #save-score-btn {
+        font-size: 1rem;
+        padding: 0.3rem 1rem;
+      }
+      .corner-btn {
+        font-size: 1rem !important;
+        padding: 0.5rem 1.1rem !important;
+        bottom: 1rem !important;
+        left: 1rem !important;
+        right: auto !important;
+        max-width: 90vw;
+      }
+      #show-leaderboard-btn.corner-btn {
+        left: auto !important;
+        right: 1rem !important;
+      }
+      #music-toggle-btn.corner-btn {
+        left: 1rem !important;
+        right: auto !important;
+      }
+    }
+    .hole.flash-green {
+      box-shadow: 0 0 0 6px #00d26a, 0 4px 16px rgba(0,0,0,0.18);
+      background: #eafff3 !important;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .points-float {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 2.2rem;
+      font-weight: bold;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 1;
+      animation: float-points 1.1s cubic-bezier(.23,1.12,.62,1.01) forwards;
+      text-shadow: 2px 2px 0 #000, 0 2px 8px #FFD300;
+      background: rgba(255,255,255,0.85);
+      border-radius: 12px;
+      padding: 0.1em 0.5em;
+      border: 2px solid #FFD300;
+      box-shadow: 0 2px 8px #FFD300;
+    }
+    .points-float.positive { color: #00d26a; }
+    .points-float.negative { color: #ff3333; }
+    @keyframes float-points {
+      0% { opacity: 1; top: 30%; }
+      80% { opacity: 1; }
+      100% { opacity: 0; top: 0%; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-32px); }
+    }
+  </style>
+</head>
+<body>
+  <h1>BONK THE BRETT!</h1>
+  <div class="game-controls">
+    <div class="score">Score: <span id="score">0</span></div>
+    <button class="start-btn" id="start-btn">Start Game</button>
+    <div class="timer">Time: <span id="timer">30</span>s</div>
+  </div>
+  <button id="music-toggle-btn" class="corner-btn" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:10001;font-family:'Bangers',cursive,sans-serif;background:#000;color:#fff;font-size:1.2rem;border:none;border-radius:12px;padding:0.7rem 2.2rem;box-shadow:0 4px 16px rgba(0,0,0,0.25);cursor:pointer;transition:background 0.2s,color 0.2s;outline:none;text-shadow:2px 2px 0 #222;opacity:0.95;">Play</button>
+      <audio id="bg-music" src="assets/brett%20song.mp3" loop></audio>
+    <audio id="jeet-audio" src="assets/ouch%20that%20hurt!%20you%20jeet!.mp3" preload="auto"></audio>
+  <div class="game-grid" id="game-grid"></div>
+  <div class="game-over" id="game-over" style="display:none;">Game Over!<br>Final Score: <span id="final-score">0</span></div>
+          <a href="/main" id="back-to-main-btn" class="start-btn" style="display:block;margin:0 auto 2.5rem auto;font-size:1.2rem;padding:0.7rem 2.2rem;max-width:320px;text-align:center;">Go to Main Site</a>
+  <div id="breakdown" style="display:none;text-align:center;margin-bottom:1.5rem;"></div>
+  <div id="username-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.92);z-index:10003;align-items:center;justify-content:center;flex-direction:column;">
+    <div style="max-width:90vw;background:#fff;padding:2rem 1.5rem 1.5rem 1.5rem;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,0.5);text-align:center;position:relative;">
+      <div id="username-leaderboard" style="margin-bottom:1.5rem;"></div>
+      <label for="username-input" style="color:#000;text-shadow:1px 1px 0 #FFD300;font-size:1.2rem;margin-right:10px;">Enter Username to Save Score:</label><br>
+      <input type="text" id="username-input" maxlength="16" placeholder="Your name" required style="font-family:'Bangers',cursive;font-size:1.2rem;padding:0.3rem 1rem;border-radius:8px;border:none;margin:1rem 0 1.2rem 0;text-align:center;width:80%;max-width:300px;">
+      <br>
+      <button id="save-score-btn" class="start-btn" style="font-size:1.1rem;padding:0.4rem 1.2rem;">Save Score</button>
+      <button id="username-share-x-btn" class="start-btn" style="font-size:1.1rem;padding:0.4rem 1.2rem;margin-left:1rem;background:#FFD300;color:#000;border:2px solid #000;box-shadow:0 2px 8px #FFD300;text-shadow:2px 2px 0 #fff;">Share to X</button>
+    </div>
+  </div>
+  <button id="show-leaderboard-btn" class="corner-btn start-btn" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:10001;font-size:1.2rem;padding:0.7rem 2.2rem;min-width:unset;width:auto;">Show Leaderboard</button>
+  <div id="leaderboard-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.92);z-index:10002;align-items:center;justify-content:center;flex-direction:column;">
+    <div style="max-width:95vw;background:#fff;padding:2.5rem 2rem 2rem 2rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.5);text-align:center;position:relative;">
+      <h2 style="color:#FFD300;font-family:'Bangers',cursive,sans-serif;font-size:2rem;margin-bottom:1.2rem;text-shadow:2px 2px 0 #000;">BONK THE BRETT CURRENT LEADERBOARD:</h2>
+      <ol id="leaderboard-list" style="list-style:none;padding:0;margin:0 0 1.2rem 0;text-align:left;"></ol>
+      <button id="expand-leaderboard-btn" class="start-btn" style="font-size:1rem;padding:0.3rem 1.2rem;margin-bottom:1rem;">Show Top 20</button>
+      <button id="share-x-btn" class="start-btn" style="font-size:1rem;padding:0.3rem 1.2rem;margin-bottom:1rem;background:#1da1f2;color:#fff;">Share to X</button>
+      <button id="close-leaderboard-btn" class="start-btn" style="font-size:1rem;padding:0.3rem 1.2rem;position:absolute;top:1rem;right:1rem;">Close</button>
+    </div>
+  </div>
+  <div id="rules-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+    <div style="max-width:90vw;background:rgba(0,0,0,0.95);padding:2.5rem 2rem 2rem 2rem;border-radius:24px;box-shadow:0 8px 32px rgba(0,0,0,0.5);text-align:center;">
+      <h2 style="color:#FFD300;font-family:'Bangers',cursive,sans-serif;font-size:2.5rem;margin-bottom:1.2rem;text-shadow:2px 2px 0 #000;">How to Play</h2>
+      <ul style="color:#fff;font-size:1.3rem;line-height:1.7;text-align:left;max-width:400px;margin:0 auto 1.5rem auto;font-family:'Bangers',cursive,sans-serif;">
+        <li>Each round, <b>all holes</b> fill with Bretts. Hit as many as you can before the next round!</li>
+        <li>Hit <b>OG Brett</b> (the original) to <span style='color:#FFD300;'>score a point</span>.</li>
+        <li>Hit any other Brett and <span style='color:#FFD300;'>lose a point</span> (score can't go below 0).</li>
+        <li>Bonk as many OG Bretts as you can in 30 seconds.</li>
+        <li>After the game, see your hit breakdown and enter your username for the leaderboard.</li>
+      </ul>
+      <button id="close-rules-btn" class="start-btn" style="margin-top:1.2rem;font-size:1.3rem;">Start Game</button>
+    </div>
+  </div>
+  <script>
+    const grid = document.getElementById('game-grid');
+    const scoreEl = document.getElementById('score');
+    const timerEl = document.getElementById('timer');
+    const startBtn = document.getElementById('start-btn');
+    const gameOverEl = document.getElementById('game-over');
+    const finalScoreEl = document.getElementById('final-score');
+    const scoreboard = document.getElementById('scoreboard');
+    const scoreList = document.getElementById('score-list');
+    const usernameModal = document.getElementById('username-modal');
+    const usernameInput = document.getElementById('username-input');
+    const saveScoreBtn = document.getElementById('save-score-btn');
+
+    const HOLES = 9;
+    const GAME_TIME = 30; // seconds
+    let score = 0;
+    let timeLeft = GAME_TIME;
+    let gameInterval, brettTimeout, gameActive = false;
+
+    // Character assets
+    const CHARACTERS = [
+      { name: 'OG Brett', src: 'assets/brett%20head.png', isOg: true },
+      { name: 'Angry Brett', src: 'assets/angry%20brett.svg', isOg: false },
+      { name: 'Crazy Brett', src: 'assets/crazy%20brett.svg', isOg: false },
+      { name: 'Shady Brett', src: 'assets/shady%20brett.svg', isOg: false },
+      { name: 'Grok Brett', src: 'assets/grok%20brett.svg', isOg: false },
+      { name: 'Bonked Brett', src: 'assets/bonked%20brett.svg', isOg: false }
+    ];
+
+    // Track hits per character
+    let hitCounts = {};
+    CHARACTERS.forEach(c => hitCounts[c.name] = 0);
+
+    // Create holes with all character images (hidden by default)
+    for (let i = 0; i < HOLES; i++) {
+      const hole = document.createElement('div');
+      hole.className = 'hole';
+      hole.dataset.index = i;
+      CHARACTERS.forEach((char, idx) => {
+        const img = document.createElement('img');
+        img.src = char.src;
+        img.alt = char.name;
+        img.className = 'brett-head brett-' + idx;
+        img.style.display = 'none';
+        img.dataset.char = char.name;
+        img.dataset.isOg = char.isOg;
+        hole.appendChild(img);
+      });
+      grid.appendChild(hole);
+    }
+    const holes = Array.from(document.querySelectorAll('.hole'));
+
+    let currentBrett = null, currentChar = null;
+
+    // Instead of showBrett, use showAllBretts for each round
+    let roundTimeout;
+    function showAllBretts() {
+      if (!gameActive) return;
+      // Hide all Bretts first
+      holes.forEach(hole => {
+        Array.from(hole.children).forEach(img => {
+          img.style.display = 'none';
+          img.classList.remove('up');
+          img.style.pointerEvents = 'auto';
+        });
+      });
+      // For each hole, pick a random character and show
+      holes.forEach(hole => {
+        const char = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+        const brett = Array.from(hole.children).find(img => img.dataset.char === char.name);
+        brett.style.display = 'block';
+        setTimeout(() => brett.classList.add('up'), 10);
+        brett.style.pointerEvents = 'auto';
+      });
+      // After a random time, hide all and start next round
+      roundTimeout = setTimeout(() => {
+        holes.forEach(hole => {
+          Array.from(hole.children).forEach(img => {
+            img.style.display = 'none';
+            img.classList.remove('up');
+            img.style.pointerEvents = 'auto';
+          });
+        });
+        if (gameActive) setTimeout(showAllBretts, 350);
+      }, Math.random() * 700 + 600); // 600ms to 1300ms per round
+    }
+
+    // Update click handler for holes
+    holes.forEach(hole => {
+      hole.addEventListener('click', function(e) {
+        if (!gameActive) return;
+        const brett = Array.from(hole.children).find(img => img.classList.contains('up'));
+        if (brett && brett.style.display !== 'none') {
+          const isOg = brett.dataset.isOg === 'true';
+          const charName = brett.dataset.char;
+          hitCounts[charName] = (hitCounts[charName] || 0) + 1;
+          // Points animation
+          let points = 0;
+          if (isOg) {
+            points = 5;
+            score += 5;
+            scoreEl.textContent = score;
+          } else {
+            points = -3;
+            score -= 3;
+            scoreEl.textContent = score;
+            jeetAudio.currentTime = 0;
+            jeetAudio.play();
+          }
+          // Show points animation
+          const float = document.createElement('div');
+          float.className = 'points-float ' + (points > 0 ? 'positive' : 'negative');
+          float.textContent = (points > 0 ? '+' : '') + points;
+          hole.appendChild(float);
+          setTimeout(() => { float.remove(); }, 1000);
+          brett.classList.remove('up');
+          brett.style.pointerEvents = 'none';
+          setTimeout(() => {
+            brett.style.display = 'none';
+          }, 100);
+        }
+      });
+    });
+
+    function showBreakdown() {
+      const breakdown = document.getElementById('breakdown');
+      breakdown.innerHTML = '<h2 style="color:#FFD300;font-family:Bangers,sans-serif;font-size:2rem;margin-bottom:1rem;">Hit Breakdown</h2>';
+      let anyHits = false;
+      CHARACTERS.forEach(char => {
+        if (hitCounts[char.name] > 0) {
+          anyHits = true;
+          breakdown.innerHTML += `<div style='display:inline-block;margin:0 1.2rem 1.2rem 1.2rem;text-align:center;'><img src='${char.src}' alt='${char.name}' style='width:48px;height:48px;display:block;margin:0 auto 0.3rem auto;'><span style='color:#000;font-size:1.2rem;'>${char.name}</span><br><span style='color:#FFD300;font-size:1.3rem;'>×${hitCounts[char.name]}</span></div>`;
+        }
+      });
+      if (!anyHits) breakdown.innerHTML += '<div style="color:#fff;">No Bretts were bonked!</div>';
+      breakdown.style.display = 'block';
+    }
+
+    function hideBreakdown() {
+      document.getElementById('breakdown').style.display = 'none';
+    }
+
+    // Helper to render leaderboard for username modal
+    function renderUsernameLeaderboard(limit = 5) {
+      const scores = getScores();
+      const container = document.getElementById('username-leaderboard');
+      container.innerHTML = '<h3 style="color:#FFD300;font-family:Bangers,sans-serif;font-size:1.3rem;margin-bottom:0.7rem;text-shadow:2px 2px 0 #000;">LEADERBOARD</h3>';
+      if (scores.length === 0) {
+        container.innerHTML += '<div style="color:#000;">No scores yet. Be the first!</div>';
+        return;
+      }
+      container.innerHTML += '<ol style="list-style:none;padding:0;margin:0;text-align:left;">' +
+        scores.slice(0, limit).map((entry, i) => `<li style='color:#000;font-size:1.1rem;margin-bottom:0.2em;'>${i+1}. ${entry.name}: ${entry.score}</li>`).join('') + '</ol>';
+    }
+    // Username entry logic: show as modal overlay
+    // When showing username modal, also show leaderboard modal above (z-index stacking)
+    function promptUsernameAndSave() {
+      usernameInput.value = getUsername();
+      leaderboardModal.style.display = 'flex';
+      leaderboardModal.style.zIndex = 10004;
+      renderScores(5);
+      expandLbBtn.textContent = 'Show Top 20';
+      usernameModal.style.display = 'flex';
+      usernameModal.style.zIndex = 10005;
+      setTimeout(() => usernameInput.focus(), 100);
+    }
+    // When closing username modal, hide leaderboard modal if it was opened for this purpose
+    saveScoreBtn.addEventListener('click', function() {
+      const name = usernameInput.value.trim();
+      if (!name) {
+        usernameInput.focus();
+        return;
+      }
+      setUsername(name);
+      saveScore(name, score);
+      usernameModal.style.display = 'none';
+      leaderboardModal.style.display = 'none';
+      renderScores();
+      hideBreakdown();
+    });
+
+    // Update startGame and endGame to use new round logic
+    function startGame() {
+      score = 0;
+      scoreEl.textContent = score;
+      timeLeft = GAME_TIME;
+      timerEl.textContent = timeLeft;
+      gameOverEl.style.display = 'none';
+      gameActive = true;
+      startBtn.disabled = true;
+      CHARACTERS.forEach(c => hitCounts[c.name] = 0);
+      hideBreakdown();
+      showAllBretts();
+      gameInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+    }
+    function endGame() {
+      gameActive = false;
+      clearInterval(gameInterval);
+      clearTimeout(brettTimeout);
+      clearTimeout(roundTimeout);
+      holes.forEach(hole => {
+        Array.from(hole.children).forEach(img => {
+          img.style.display = 'none';
+          img.classList.remove('up');
+        });
+      });
+      startBtn.disabled = false;
+      finalScoreEl.textContent = score;
+      gameOverEl.style.display = 'block';
+      showBreakdown();
+      if (score > 0) {
+        setTimeout(promptUsernameAndSave, 800);
+      }
+    }
+
+    // Helper: Get/set username in localStorage
+    function getUsername() {
+      return localStorage.getItem('brett_bonk_username') || '';
+    }
+    function setUsername(name) {
+      localStorage.setItem('brett_bonk_username', name);
+    }
+
+    // Helper: Get/set scores in localStorage
+    function getScores() {
+      try {
+        return JSON.parse(localStorage.getItem('brett_bonk_scores')) || [];
+      } catch { return []; }
+    }
+    function saveScore(name, score) {
+      const scores = getScores();
+      scores.push({ name, score });
+      scores.sort((a, b) => b.score - a.score);
+      const top20 = scores.slice(0, 20);
+      localStorage.setItem('brett_bonk_scores', JSON.stringify(top20));
+    }
+    function renderScores(limit = 5) {
+      const scores = getScores();
+      leaderboardList.innerHTML = '';
+      if (scores.length === 0) {
+        leaderboardList.innerHTML = '<li>No scores yet. Be the first!</li>';
+        return;
+      }
+      scores.slice(0, limit).forEach((entry, i) => {
+        const li = document.createElement('li');
+        li.textContent = `${i+1}. ${entry.name}: ${entry.score}`;
+        leaderboardList.appendChild(li);
+      });
+    }
+
+    // Rules overlay logic
+    const rulesOverlay = document.getElementById('rules-overlay');
+    const closeRulesBtn = document.getElementById('close-rules-btn');
+    let rulesClosed = false;
+    function showRules() {
+      rulesOverlay.style.display = 'flex';
+      rulesClosed = false;
+      startBtn.disabled = true;
+    }
+    function hideRules() {
+      rulesOverlay.style.display = 'none';
+      rulesClosed = true;
+      startBtn.disabled = false;
+    }
+    closeRulesBtn.addEventListener('click', hideRules);
+    // Prevent game start until rules closed
+    startBtn.disabled = true;
+    showRules();
+    // Only allow game start if rules closed
+    const origStartGame = startGame;
+    startBtn.removeEventListener('click', startGame);
+    startBtn.addEventListener('click', function(){
+      if (rulesClosed) origStartGame();
+    });
+
+    // Music button logic
+    const bgMusic = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-toggle-btn');
+    // Start paused
+    bgMusic.pause();
+    musicBtn.textContent = 'Play';
+    function updateMusicBtn() {
+      musicBtn.textContent = bgMusic.paused ? 'Play Music' : 'Pause Music';
+    }
+    musicBtn.addEventListener('click', function() {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(()=>{});
+      } else {
+        bgMusic.pause();
+      }
+      updateMusicBtn();
+    });
+    bgMusic.addEventListener('play', updateMusicBtn);
+    bgMusic.addEventListener('pause', updateMusicBtn);
+    // Set initial button text
+    updateMusicBtn();
+
+    // Leaderboard modal logic
+    const showLbBtn = document.getElementById('show-leaderboard-btn');
+    const leaderboardModal = document.getElementById('leaderboard-modal');
+    const leaderboardList = document.getElementById('leaderboard-list');
+    const closeLbBtn = document.getElementById('close-leaderboard-btn');
+    const expandLbBtn = document.getElementById('expand-leaderboard-btn');
+    const shareXBtn = document.getElementById('share-x-btn');
+    let leaderboardExpanded = false;
+
+    showLbBtn.addEventListener('click', function() {
+      leaderboardModal.style.display = 'flex';
+      leaderboardExpanded = false;
+      renderScores(5);
+      expandLbBtn.textContent = 'Show Top 20';
+    });
+    closeLbBtn.addEventListener('click', function() {
+      leaderboardModal.style.display = 'none';
+    });
+    expandLbBtn.addEventListener('click', function() {
+      leaderboardExpanded = !leaderboardExpanded;
+      renderScores(leaderboardExpanded ? 20 : 5);
+      expandLbBtn.textContent = leaderboardExpanded ? 'Show Top 5' : 'Show Top 20';
+    });
+    // Share to X from username modal
+    const usernameShareXBtn = document.getElementById('username-share-x-btn');
+    usernameShareXBtn.addEventListener('click', function() {
+      const scores = getScores();
+      let text = 'BONK THE BRETT CURRENT LEADERBOARD:\n';
+      scores.slice(0, 5).forEach((entry, i) => {
+        let uname = entry.name.trim();
+        if (!uname.startsWith('@')) uname = '@' + uname;
+        text += `${i+1}. ${uname} (${entry.score})\n`;
+      });
+      text += '\n#BonkTheBrett #BonkTheBrettChallenge\nPlay Now: ' + window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,'_blank');
+    });
+    shareXBtn.addEventListener('click', function() {
+      const scores = getScores();
+      let text = 'BONK THE BRETT CURRENT LEADERBOARD:\n';
+      scores.slice(0, 5).forEach((entry, i) => {
+        let uname = entry.name.trim();
+        if (!uname.startsWith('@')) uname = '@' + uname;
+        text += `${i+1}. ${uname} (${entry.score})\n`;
+      });
+      text += '\n#BonkTheBrett #BonkTheBrettChallenge\nPlay Now: ' + window.location.href;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,'_blank');
+    });
+
+    // Remove always-visible scoreboard
+    document.getElementById('scoreboard').style.display = 'none';
+
+    const jeetAudio = document.getElementById('jeet-audio');
+    // Ensure audio is unmuted and at full volume
+    jeetAudio.muted = false;
+    jeetAudio.volume = 1;
+    // Unlock audio on first user interaction (for mobile/browser autoplay policies)
+    function unlockJeetAudio() {
+      jeetAudio.play().then(() => jeetAudio.pause()).catch(()=>{});
+      window.removeEventListener('click', unlockJeetAudio);
+      window.removeEventListener('touchstart', unlockJeetAudio);
+    }
+    window.addEventListener('click', unlockJeetAudio);
+    window.addEventListener('touchstart', unlockJeetAudio);
+  </script>
+</body>
+</html> 

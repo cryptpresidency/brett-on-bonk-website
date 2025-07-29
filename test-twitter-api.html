@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X API Test - BrettonBonk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: white;
+    }
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .success { color: #4CAF50; }
+    .error { color: #f44336; }
+    .info { color: #2196F3; }
+    button {
+      background: #ffd700;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #ffed4e;
+    }
+    .tweet {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #ffd700;
+    }
+    .loading {
+      color: #ffd700;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐦 X API Test - BrettonBonk</h1>
+  
+  <div class="test-section">
+    <h2>API Status</h2>
+    <div id="api-status" class="loading">Testing API connection...</div>
+    <button onclick="testAPI()">Test API Connection</button>
+  </div>
+
+  <div class="test-section">
+    <h2>User Info Test</h2>
+    <div id="user-info" class="loading">Loading user info...</div>
+    <button onclick="testUserInfo()">Get User Info</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Tweets Test</h2>
+    <div id="tweets-test" class="loading">Loading tweets...</div>
+    <button onclick="testTweets()">Get Tweets</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Rate Limit Info</h2>
+    <div id="rate-limit" class="info">
+      Free Tier: 300 requests per 15 minutes<br>
+      Current usage: <span id="usage">Unknown</span>
+    </div>
+  </div>
+
+  <script>
+    // Twitter API class (simplified version)
+    class TwitterAPITest {
+      constructor() {
+        this.baseURL = 'https://api.twitter.com/2';
+        this.bearerToken = 'AAAAAAAAAAAAAAAAAAAAANcU3QEAAAAAQwzSx90Nua3cp1X5yK4OChkx%2FS0%3DGD9cO2ufOBy6bF2eTjwdrdPOz0LsVyXKpb8cG9hu2CA6FkuOML';
+      }
+
+      async makeAPICall(endpoint, params = {}) {
+        // For now, always use mock data until we can properly set up the serverless function
+        console.log('Using mock data for now - API integration coming soon!');
+        throw new Error('API unavailable, using mock data');
+      }
+
+      async testConnection() {
+        try {
+          const response = await this.makeAPICall('/tweets/search/recent', {
+            query: 'BRETT',
+            max_results: 1
+          });
+          return { success: true, data: response };
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      }
+
+      async getUserInfo(username = 'BrettOnBonk') {
+        try {
+          const response = await this.makeAPICall(`/users/by/username/${username}`, {
+            'user.fields': 'id,username,name,public_metrics,profile_image_url'
+          });
+          return { success: true, data: response };
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      }
+
+      async getTweets(query = 'BRETT OR #Brett OR #Bonk', maxResults = 5) {
+        try {
+          const response = await this.makeAPICall('/tweets/search/recent', {
+            query: query,
+            max_results: maxResults,
+            'tweet.fields': 'created_at,public_metrics,author_id',
+            'user.fields': 'username,name,profile_image_url',
+            expansions: 'author_id'
+          });
+          return { success: true, data: response };
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      }
+    }
+
+    const api = new TwitterAPITest();
+
+    async function testAPI() {
+      const statusDiv = document.getElementById('api-status');
+      statusDiv.innerHTML = '<span class="success">✅ Using Mock Data - API Integration Coming Soon!</span>';
+    }
+
+    async function testUserInfo() {
+      const userDiv = document.getElementById('user-info');
+      userDiv.innerHTML = `
+        <span class="success">✅ Mock User Info Loaded!</span><br>
+        <strong>Name:</strong> OG BRETT<br>
+        <strong>Username:</strong> @BrettOnBonk<br>
+        <strong>Followers:</strong> 15,420<br>
+        <strong>Following:</strong> 1,234<br>
+        <strong>Tweets:</strong> 567
+      `;
+    }
+
+    async function testTweets() {
+      const tweetsDiv = document.getElementById('tweets-test');
+      const mockTweets = [
+        {
+          text: '🚀 BRETT just hit another ATH! The community is absolutely BONKING! 💎🙌 #Brett #Bonk #Crypto',
+          created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+          public_metrics: { like_count: 234, retweet_count: 45, reply_count: 12 }
+        },
+        {
+          text: 'Just created the most epic BRETT meme! The community is going to love this one! 🎨🔥 #BrettMeme #Bonk',
+          created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+          public_metrics: { like_count: 456, retweet_count: 67, reply_count: 23 }
+        },
+        {
+          text: 'New game alert! 🎮 Brett\'s BonkMan is now live! Test your skills and compete with the community! #BrettGames #Bonk',
+          created_at: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+          public_metrics: { like_count: 678, retweet_count: 89, reply_count: 34 }
+        }
+      ];
+      
+      let html = `<span class="success">✅ Found ${mockTweets.length} mock tweets!</span><br><br>`;
+      mockTweets.forEach(tweet => {
+        const timeAgo = getTimeAgo(tweet.created_at);
+        html += `
+          <div class="tweet">
+            <strong>${timeAgo}</strong><br>
+            ${tweet.text}<br>
+            <small>❤️ ${tweet.public_metrics.like_count} | 🔄 ${tweet.public_metrics.retweet_count} | 💬 ${tweet.public_metrics.reply_count}</small>
+          </div>
+        `;
+      });
+      tweetsDiv.innerHTML = html;
+    }
+
+    function getTimeAgo(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+
+      if (diffInSeconds < 60) return 'just now';
+      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    }
+
+    // Auto-test on page load
+    window.addEventListener('load', async () => {
+      await testAPI();
+      await testUserInfo();
+      await testTweets();
+    });
+  </script>
+</body>
+</html> 

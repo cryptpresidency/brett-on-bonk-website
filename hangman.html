@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brett's Hangman | Meme Coin Word Game</title>
+  <meta name="description" content="Play Brett's Hangman and test your crypto meme knowledge! Guess words, beat the timer, and share your score. #Brett #Hangman #Crypto">
+  <link rel="canonical" href="https://brettonbonk.com/hangman">
+  <meta property="og:title" content="Brett's Hangman | Meme Coin Word Game">
+  <meta property="og:description" content="Play Brett's Hangman and test your crypto meme knowledge! Guess words, beat the timer, and share your score.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/hangman">
+  <meta property="og:image" content="https://brettonbonk.com/assets/Shady%20Brett.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brett's Hangman | Meme Coin Word Game">
+  <meta name="twitter:description" content="Play Brett's Hangman and test your crypto meme knowledge! Guess words, beat the timer, and share your score.">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/Shady%20Brett.svg">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #000;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .hangman-container {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .hangman-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .hangman-timer {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      text-align: center;
+      flex: 1;
+    }
+    .hangman-score {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.7rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      text-align: right;
+      min-width: 120px;
+    }
+    .hangman-brett-img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+      transition: opacity 0.4s;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25));
+    }
+    .hangman-word {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 2.7rem;
+      color: #fff;
+      letter-spacing: 0.5em;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      text-shadow: 3px 3px 0 #000;
+      user-select: none;
+      word-break: break-all;
+    }
+    .hangman-plusone {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 210px;
+      transform: translateX(-50%) scale(1);
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 2.2rem;
+      color: #00ff5a;
+      text-shadow: 2px 2px 0 #000, 0 2px 8px #000;
+      font-weight: bold;
+      pointer-events: none;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.5s;
+    }
+    .hangman-plusone.show {
+      display: block;
+      opacity: 1;
+      transform: translateX(-50%) scale(1.3);
+      animation: plusone-float 0.7s ease-out forwards;
+    }
+    @keyframes plusone-float {
+      0% { opacity: 0; transform: translateX(-50%) scale(1.1) translateY(0); }
+      20% { opacity: 1; transform: translateX(-50%) scale(1.3) translateY(-10px); }
+      100% { opacity: 0; transform: translateX(-50%) scale(1.1) translateY(-40px); }
+    }
+    .hangman-wrong-count {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      color: #FFD300;
+      text-shadow: 2px 2px 0 #000;
+      margin-bottom: 0.7rem;
+      text-align: center;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+    .hangman-hint {
+      display: none;
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      color: #FFD300;
+      text-shadow: 2px 2px 0 #000;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .hangman-keyboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+      max-width: 420px;
+    }
+    .hangman-key {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      background: #FFD300;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1.1rem;
+      margin: 0.1rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      text-shadow: 2px 2px 0 #000;
+      transition: background 0.2s, color 0.2s, opacity 0.2s;
+      outline: none;
+      text-transform: uppercase;
+    }
+    .hangman-key:disabled {
+      background: #222;
+      color: #888;
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+    .hangman-reset-btn {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1rem;
+      background: #FFD300;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.5rem 1.3rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18), 2px 2px 0 #FFD300;
+      text-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      position: fixed;
+      left: 50%;
+      bottom: 1.2rem;
+      transform: translateX(-50%);
+      z-index: 10;
+      min-width: 90px;
+    }
+    .hangman-reset-btn:active, .hangman-reset-btn:focus {
+      background: #fff;
+      color: #FFD300;
+    }
+    .hangman-popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+    .hangman-popup {
+      background: #111;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      padding: 3rem 2.5rem 2.5rem 2.5rem;
+      text-align: center;
+      max-width: 90vw;
+      min-width: 260px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hangman-popup-title {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 2.7rem;
+      color: #FFD300;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+      text-shadow: 3px 3px 0 #000;
+    }
+    .hangman-popup-score {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.7rem;
+      color: #fff;
+      margin-bottom: 2rem;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .hangman-popup-btn {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      background: #FFD300;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.8rem 2.2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      text-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-top: 1rem;
+    }
+    .hangman-popup-btn:active, .hangman-popup-btn:focus {
+      background: #fff;
+      color: #FFD300;
+    }
+    .hangman-popup-x-btn {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.1rem;
+      background: #1da1f2;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      text-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      margin-top: 0.7rem;
+      width: 100%;
+      max-width: 320px;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .hangman-container {
+        max-width: 98vw;
+        padding: 1rem 0.2rem 4rem 0.2rem;
+      }
+      .hangman-brett-img {
+        width: 110px;
+        height: 110px;
+      }
+      .hangman-word {
+        font-size: 1.5rem;
+      }
+      .hangman-header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .hangman-reset-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+        bottom: 1.2rem;
+      }
+      .hangman-popup {
+        padding: 1.5rem 0.7rem 1.2rem 0.7rem;
+      }
+      .hangman-popup-title {
+        font-size: 1.5rem;
+      }
+      .hangman-popup-score {
+        font-size: 1.1rem;
+      }
+    }
+    .hangman-rules-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.92);
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hangman-rules-box {
+      background: #111;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      padding: 2.5rem 2rem 2rem 2rem;
+      text-align: center;
+      max-width: 95vw;
+      min-width: 260px;
+      color: #fff;
+      font-family: 'Bangers', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hangman-rules-title {
+      font-size: 2.2rem;
+      color: #FFD300;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+      text-shadow: 3px 3px 0 #000;
+      letter-spacing: 1px;
+    }
+    .hangman-rules-list {
+      text-align: left;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 2rem;
+      padding-left: 1.2rem;
+      font-family: 'Bangers', cursive, sans-serif;
+    }
+    .hangman-rules-list li {
+      margin-bottom: 0.7rem;
+      line-height: 1.4;
+    }
+    .hangman-rules-btn {
+      font-family: 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      background: #FFD300;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.8rem 2.2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      text-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="hangman-rules-overlay" id="hangman-rules-overlay">
+    <div class="hangman-rules-box">
+      <div class="hangman-rules-title">How to Play Hangman</div>
+      <ul class="hangman-rules-list">
+        <li>Guess the word by clicking the on-screen letters.</li>
+        <li>Each correct letter gives you <span style="color:#00ff5a;">+1</span> point.</li>
+        <li>You have 10 wrong guesses per word. If you run out, a new word appears.</li>
+        <li>Guess the full word to earn <span style="color:#FFD300;">+30 seconds</span> (max 5 minutes).</li>
+        <li>The game ends when the timer runs out.</li>
+        <li>Try to get the highest score before time is up!</li>
+      </ul>
+      <button class="hangman-rules-btn" id="hangman-rules-btn">Start Game</button>
+    </div>
+  </div>
+  <div class="hangman-container">
+    <div class="hangman-header">
+      <div class="hangman-timer" id="hangman-timer">Time Left: 01:00</div>
+      <div class="hangman-score" id="hangman-score">Score: 0</div>
+    </div>
+    <img src="assets/shady%20brett.svg" alt="Brett" class="hangman-brett-img" id="hangman-brett-img">
+    <div class="hangman-word" id="hangman-word">_ _ _ _ _</div>
+    <div class="hangman-plusone" id="hangman-plusone">+1</div>
+    <div class="hangman-wrong-count" id="hangman-wrong-count">Wrong: 0 / 10</div>
+    <div class="hangman-hint" id="hangman-hint">Hint: </div>
+    <div class="hangman-keyboard" id="hangman-keyboard"></div>
+  </div>
+  <button class="hangman-reset-btn" id="hangman-reset-btn">Reset</button>
+  <div class="hangman-popup-overlay" id="hangman-popup-overlay">
+    <div class="hangman-popup">
+      <div class="hangman-popup-title" id="hangman-popup-title">Game Over</div>
+      <div class="hangman-popup-score" id="hangman-popup-score">Final Score: 0</div>
+      <button class="hangman-popup-x-btn" id="hangman-popup-x-btn">Post Score on X</button>
+      <button class="hangman-popup-btn" id="hangman-popup-btn">Try Again</button>
+    </div>
+  </div>
+  <script src="hangman.js"></script>
+</body>
+</html> 

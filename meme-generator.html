@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brett's Meme Generator | Brett on Bonk</title>
+  <meta name="description" content="Create epic Brett-themed memes with our meme generator. Upload images, add captions, and share your creations!">
+  <link rel="canonical" href="https://brettonbonk.com/meme-generator">
+  <meta property="og:title" content="Brett's Meme Generator | Brett on Bonk">
+  <meta property="og:description" content="Create epic Brett-themed memes with our meme generator. Upload images, add captions, and share your creations!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/meme-generator">
+  <meta property="og:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brett's Meme Generator | Brett on Bonk">
+  <meta name="twitter:description" content="Create epic Brett-themed memes with our meme generator. Upload images, add captions, and share your creations!">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <link rel="icon" type="image/png" href="assets/Brett%20Head.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="assets/Brett Font.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    .meme-generator-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      min-height: 100vh;
+    }
+
+    .meme-generator-title {
+      text-align: center;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 0px #000;
+    }
+
+    .meme-generator-subtitle {
+      text-align: center;
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      font-family: 'Bangers', cursive;
+    }
+
+    .meme-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .meme-controls {
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 15px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .meme-preview {
+      background: #000;
+      border: 3px solid #FFD300;
+      border-radius: 15px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 400px;
+      position: relative;
+    }
+
+    .upload-area {
+      border: 3px dashed #FFD300;
+      border-radius: 15px;
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 211, 0, 0.05);
+    }
+
+    .upload-area:hover {
+      background: rgba(255, 211, 0, 0.1);
+      border-color: #fff;
+    }
+
+    .upload-area.dragover {
+      background: rgba(255, 211, 0, 0.2);
+      border-color: #fff;
+      transform: scale(1.02);
+    }
+
+    .upload-icon {
+      font-size: 4rem;
+      color: #FFD300;
+      margin-bottom: 1rem;
+    }
+
+    .upload-text {
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-subtext {
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .meme-canvas {
+      max-width: 100%;
+      max-height: 400px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .caption-controls {
+      margin-top: 2rem;
+    }
+
+    .caption-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .caption-label {
+      display: block;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .caption-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .caption-input:focus {
+      outline: none;
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255, 211, 0, 0.5);
+    }
+
+    .caption-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+
+    .caption-option {
+      background: #FFD300;
+      color: #000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-family: 'Bangers', cursive;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .caption-option:hover {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    .meme-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .meme-btn {
+      background: linear-gradient(45deg, #FFD300, #FFA500);
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .meme-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 211, 0, 0.4);
+    }
+
+    .meme-btn.secondary {
+      background: linear-gradient(45deg, #666, #999);
+      color: #fff;
+    }
+
+    .meme-btn.danger {
+      background: linear-gradient(45deg, #ff4444, #cc0000);
+      color: #fff;
+    }
+
+    .template-gallery {
+      margin-top: 3rem;
+    }
+
+    .template-title {
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .template-item {
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .template-item:hover {
+      background: rgba(255, 211, 0, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .template-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .template-name {
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      background: #FFD300;
+      color: #000;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      z-index: 1000;
+    }
+
+    .back-btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+    }
+
+    .loading {
+      display: none;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .error-message {
+      color: #ff4444;
+      background: rgba(255, 68, 68, 0.1);
+      border: 1px solid #ff4444;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .meme-workspace {
+        grid-template-columns: 1fr;
+      }
+      
+      .meme-generator-title {
+        font-size: 2rem;
+      }
+      
+      .back-btn {
+        position: static;
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+          <a href="/main" class="back-btn">← Back to Brett</a>
+  
+  <div class="meme-generator-container">
+    <h1 class="meme-generator-title">🎨 BRETT'S MEME GENERATOR</h1>
+    <p class="meme-generator-subtitle">CREATE EPIC MEMES WITH BRETT STYLE!</p>
+
+    <div class="meme-workspace">
+      <div class="meme-controls">
+                 <div class="upload-area" id="uploadArea">
+           <div class="upload-icon">📸</div>
+           <div class="upload-text">UPLOAD YOUR IMAGE</div>
+           <div class="upload-subtext">Click or drag & drop</div>
+           <div class="upload-subtext" style="margin-top: 1rem; color: #FFD300; font-size: 0.9rem;">
+             💡 Or choose from popular templates below!
+           </div>
+           <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+         </div>
+
+        <div class="caption-controls">
+          <div class="caption-group">
+            <label class="caption-label">TOP TEXT</label>
+            <input type="text" id="topText" class="caption-input" placeholder="Enter top caption..." maxlength="50">
+          </div>
+
+          <div class="caption-group">
+            <label class="caption-label">BOTTOM TEXT</label>
+            <input type="text" id="bottomText" class="caption-input" placeholder="Enter bottom caption..." maxlength="50">
+          </div>
+
+          <div class="caption-options">
+            <button class="caption-option" onclick="setCaption('top', 'GET BONKED')">GET BONKED</button>
+            <button class="caption-option" onclick="setCaption('top', 'CHAD ALERT')">CHAD ALERT</button>
+            <button class="caption-option" onclick="setCaption('top', 'HODL GANG')">HODL GANG</button>
+            <button class="caption-option" onclick="setCaption('top', 'BULLISH')">BULLISH</button>
+            <button class="caption-option" onclick="setCaption('top', 'DIAMOND HANDS')">DIAMOND HANDS</button>
+            <button class="caption-option" onclick="setCaption('top', 'FACTS')">FACTS</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'JEETERS GONNA JEET')">JEETERS GONNA JEET</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'WAGMI')">WAGMI</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'TO THE MOON')">TO THE MOON</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'COPE')">COPE</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'STAY MAD')">STAY MAD</button>
+            <button class="caption-option" onclick="setCaption('bottom', 'BASED')">BASED</button>
+          </div>
+        </div>
+
+        <div class="meme-actions">
+          <button class="meme-btn" onclick="generateMeme()">
+            🎨 GENERATE MEME
+          </button>
+          <button class="meme-btn secondary" onclick="clearMeme()">
+            🗑️ CLEAR
+          </button>
+        </div>
+      </div>
+
+      <div class="meme-preview">
+        <canvas id="memeCanvas" class="meme-canvas" width="400" height="400"></canvas>
+        <div id="loading" class="loading">🎨 GENERATING YOUR MEME...</div>
+        <div id="errorMessage" class="error-message"></div>
+      </div>
+    </div>
+
+    <div class="template-gallery">
+      <h2 class="template-title">🎭 BRETT TEMPLATES</h2>
+      <div class="template-grid">
+        <div class="template-item" onclick="loadTemplate('assets/brett%20head.png', 'BRETT HEAD')">
+          <img src="assets/brett%20head.png" alt="Brett Head">
+          <div class="template-name">BRETT HEAD</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('assets/angry%20brett.svg', 'ANGRY BRETT')">
+          <img src="assets/angry%20brett.svg" alt="Angry Brett">
+          <div class="template-name">ANGRY BRETT</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('assets/crazy%20brett.svg', 'CRAZY BRETT')">
+          <img src="assets/crazy%20brett.svg" alt="Crazy Brett">
+          <div class="template-name">CRAZY BRETT</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('assets/grok%20brett.svg', 'GROK BRETT')">
+          <img src="assets/grok%20brett.svg" alt="Grok Brett">
+          <div class="template-name">GROK BRETT</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('assets/shady%20brett.svg', 'SHADY BRETT')">
+          <img src="assets/shady%20brett.svg" alt="Shady Brett">
+          <div class="template-name">SHADY BRETT</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('assets/bonked%20brett.svg', 'BONKED BRETT')">
+          <img src="assets/bonked%20brett.svg" alt="Bonked Brett">
+          <div class="template-name">BONKED BRETT</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="template-gallery">
+      <h2 class="template-title">🔥 POPULAR MEME TEMPLATES</h2>
+      <div class="template-grid">
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bhk.jpg', 'SUCCESS KID')">
+          <img src="https://i.imgflip.com/1bhk.jpg" alt="Success Kid">
+          <div class="template-name">SUCCESS KID</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh3.jpg', 'UNCLESAM')">
+          <img src="https://i.imgflip.com/1bh3.jpg" alt="Uncle Sam">
+          <div class="template-name">UNCLE SAM</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh8.jpg', 'UNDERTAKER')">
+          <img src="https://i.imgflip.com/1bh8.jpg" alt="Undertaker">
+          <div class="template-name">UNDERTAKER</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh5.jpg', 'YOU GUYS ARE GETTING PAID')">
+          <img src="https://i.imgflip.com/1bh5.jpg" alt="You Guys Are Getting Paid">
+          <div class="template-name">YOU GUYS ARE GETTING PAID</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh7.jpg', 'LAUGHING LEO')">
+          <img src="https://i.imgflip.com/1bh7.jpg" alt="Laughing Leo">
+          <div class="template-name">LAUGHING LEO</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh9.jpg', 'THEY DONT KNOW')">
+          <img src="https://i.imgflip.com/1bh9.jpg" alt="They Dont Know">
+          <div class="template-name">THEY DONT KNOW</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh2.jpg', 'TEACHERS COPY')">
+          <img src="https://i.imgflip.com/1bh2.jpg" alt="Teachers Copy">
+          <div class="template-name">TEACHERS COPY</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh4.jpg', 'SURPRISED PIKACHU')">
+          <img src="https://i.imgflip.com/1bh4.jpg" alt="Surprised Pikachu">
+          <div class="template-name">SURPRISED PIKACHU</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh6.jpg', 'COMMUNITY FIRE')">
+          <img src="https://i.imgflip.com/1bh6.jpg" alt="Community Fire">
+          <div class="template-name">COMMUNITY FIRE</div>
+        </div>
+        <div class="template-item" onclick="loadTemplate('https://i.imgflip.com/1bh1.jpg', 'PIZZA MEME')">
+          <img src="https://i.imgflip.com/1bh1.jpg" alt="Pizza Meme">
+          <div class="template-name">PIZZA MEME</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentImage = null;
+    let canvas = null;
+    let ctx = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      canvas = document.getElementById('memeCanvas');
+      ctx = canvas.getContext('2d');
+      
+      setupUploadArea();
+      setupCaptionInputs();
+    });
+
+    // Upload area setup
+    function setupUploadArea() {
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('imageUpload');
+
+      uploadArea.addEventListener('click', () => fileInput.click());
+      
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+      
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+      
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleImageUpload(files[0]);
+        }
+      });
+      
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          handleImageUpload(e.target.files[0]);
+        }
+      });
+    }
+
+    // Handle image upload
+    function handleImageUpload(file) {
+      if (!file.type.startsWith('image/')) {
+        showError('Please select a valid image file!');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          currentImage = img;
+          generateMeme();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Load template
+    function loadTemplate(src, name) {
+      const img = new Image();
+      img.onload = function() {
+        currentImage = img;
+        generateMeme();
+        showSuccess(`Loaded ${name} template!`);
+      };
+      img.src = src;
+    }
+
+    // Setup caption inputs
+    function setupCaptionInputs() {
+      const topText = document.getElementById('topText');
+      const bottomText = document.getElementById('bottomText');
+      
+      [topText, bottomText].forEach(input => {
+        input.addEventListener('input', generateMeme);
+        input.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            generateMeme();
+          }
+        });
+      });
+    }
+
+    // Set caption from button
+    function setCaption(position, text) {
+      if (position === 'top') {
+        document.getElementById('topText').value = text;
+      } else {
+        document.getElementById('bottomText').value = text;
+      }
+      generateMeme();
+    }
+
+    // Generate meme
+    function generateMeme() {
+      if (!currentImage) {
+        showError('Please upload an image first!');
+        return;
+      }
+
+      showLoading(true);
+      hideError();
+
+      // Set canvas size based on image
+      const maxSize = 400;
+      const ratio = Math.min(maxSize / currentImage.width, maxSize / currentImage.height);
+      canvas.width = currentImage.width * ratio;
+      canvas.height = currentImage.height * ratio;
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw image
+      ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+
+      // Add text
+      const topText = document.getElementById('topText').value;
+      const bottomText = document.getElementById('bottomText').value;
+
+      if (topText) {
+        addText(topText, canvas.width / 2, 50, 'top');
+      }
+      if (bottomText) {
+        addText(bottomText, canvas.width / 2, canvas.height - 30, 'bottom');
+      }
+
+      // Show canvas
+      canvas.style.display = 'block';
+      showLoading(false);
+    }
+
+    // Add text to canvas
+    function addText(text, x, y, position) {
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 4;
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 32px Impact, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = position === 'top' ? 'top' : 'bottom';
+
+      // Draw stroke
+      ctx.strokeText(text, x, y);
+      // Draw fill
+      ctx.fillText(text, x, y);
+    }
+
+    // Clear meme
+    function clearMeme() {
+      currentImage = null;
+      canvas.style.display = 'none';
+      document.getElementById('topText').value = '';
+      document.getElementById('bottomText').value = '';
+      hideError();
+      showSuccess('Meme cleared!');
+    }
+
+    // Download meme
+    function downloadMeme() {
+      if (!currentImage) {
+        showError('No meme to download!');
+        return;
+      }
+
+      const link = document.createElement('a');
+      link.download = 'brett-meme.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Utility functions
+    function showLoading(show) {
+      document.getElementById('loading').style.display = show ? 'block' : 'none';
+    }
+
+    function showError(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+
+    function hideError() {
+      document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    function showSuccess(message) {
+      // Simple success feedback
+      console.log(message);
+    }
+
+    // Add download button to actions when meme is generated
+    function addDownloadButton() {
+      const actions = document.querySelector('.meme-actions');
+      if (!document.getElementById('downloadBtn')) {
+        const downloadBtn = document.createElement('button');
+        downloadBtn.id = 'downloadBtn';
+        downloadBtn.className = 'meme-btn';
+        downloadBtn.innerHTML = '💾 DOWNLOAD';
+        downloadBtn.onclick = downloadMeme;
+        actions.appendChild(downloadBtn);
+      }
+    }
+
+    // Override generateMeme to add download button
+    const originalGenerateMeme = generateMeme;
+    generateMeme = function() {
+      originalGenerateMeme();
+      if (currentImage) {
+        setTimeout(addDownloadButton, 100);
+      }
+    };
+  </script>
+</body>
+</html> 

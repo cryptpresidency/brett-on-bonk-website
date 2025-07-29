@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brett Trading Bot Simulator - Login | Brett on Bonk</title>
+  <meta name="description" content="Login to Brett's Trading Bot Simulator. Practice trading BRETT tokens with virtual money and compete on the leaderboard!">
+  <link rel="canonical" href="https://brettonbonk.com/login">
+  <meta property="og:title" content="Brett Trading Bot Simulator - Login | Brett on Bonk">
+  <meta property="og:description" content="Login to Brett's Trading Bot Simulator. Practice trading BRETT tokens with virtual money and compete on the leaderboard!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/login">
+  <meta property="og:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brett Trading Bot Simulator - Login | Brett on Bonk">
+  <meta name="twitter:description" content="Login to Brett's Trading Bot Simulator. Practice trading BRETT tokens with virtual money and compete on the leaderboard!">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="assets/brett%20font.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    .login-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 3px solid #FFD300;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-title {
+      text-align: center;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 0px #000;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-family: 'Bangers', cursive;
+    }
+
+    .form-toggle {
+      display: flex;
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.3rem;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-btn.active {
+      background: #FFD300;
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #FFD300;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #fff;
+      box-shadow: 0 0 15px rgba(255, 211, 0, 0.5);
+    }
+
+    .form-input::placeholder {
+      color: #ccc;
+    }
+
+    .profile-selection {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .profile-option {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .profile-option:hover {
+      border-color: #FFD300;
+      background: rgba(255, 211, 0, 0.2);
+    }
+
+    .profile-option.selected {
+      border-color: #FFD300;
+      background: rgba(255, 211, 0, 0.3);
+    }
+
+    .profile-option img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-option .profile-name {
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #FFD300, #FFA500);
+      color: #000;
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      margin-top: 1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 211, 0, 0.4);
+    }
+
+    .error-message {
+      color: #ff4444;
+      text-align: center;
+      margin-top: 1rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+    }
+
+    .success-message {
+      color: #4CAF50;
+      text-align: center;
+      margin-top: 1rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .back-link a {
+      color: #FFD300;
+      text-decoration: none;
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-link a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 211, 0, 0.5);
+    }
+
+    .leaderboard-preview {
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .leaderboard-preview h3 {
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .leaderboard-entry {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .rank {
+      color: #FFD300;
+      font-weight: bold;
+      margin-right: 1rem;
+      min-width: 30px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      margin-right: 0.8rem;
+    }
+
+    .username {
+      color: #fff;
+      font-weight: bold;
+      margin-right: 1rem;
+    }
+
+    .profit {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+      
+      .login-title {
+        font-size: 2rem;
+      }
+      
+      .profile-selection {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1 class="login-title">🎮 BRETT TRADING SIMULATOR</h1>
+    <p class="login-subtitle">Practice trading BRETT tokens with virtual money!</p>
+
+    <!-- Form Toggle -->
+    <div class="form-toggle">
+      <button class="toggle-btn active" id="login-toggle">LOGIN</button>
+      <button class="toggle-btn" id="register-toggle">REGISTER</button>
+    </div>
+
+    <!-- Login Form -->
+    <form id="login-form" class="auth-form">
+      <div class="form-group">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" class="form-input" placeholder="Enter your username" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
+      </div>
+      
+      <button type="submit" class="submit-btn">LOGIN</button>
+    </form>
+
+    <!-- Registration Form -->
+    <form id="register-form" class="auth-form" style="display: none;">
+      <div class="form-group">
+        <label for="register-username">Username</label>
+        <input type="text" id="register-username" class="form-input" placeholder="Choose a unique username" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="register-password">Password</label>
+        <input type="password" id="register-password" class="form-input" placeholder="Choose a password" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="register-email">Email (Optional)</label>
+        <input type="email" id="register-email" class="form-input" placeholder="Enter your email">
+      </div>
+      
+      <div class="form-group">
+        <label>Choose Profile Picture</label>
+        <div class="profile-selection">
+          <div class="profile-option selected" data-profile="brett%20head.png">
+            <img src="assets/brett%20head.png" alt="OG Brett">
+            <div class="profile-name">OG BRETT</div>
+          </div>
+          <div class="profile-option" data-profile="angry%20brett.svg">
+            <img src="assets/angry%20brett.svg" alt="Angry Brett">
+            <div class="profile-name">ANGRY</div>
+          </div>
+          <div class="profile-option" data-profile="crazy%20brett.svg">
+            <img src="assets/crazy%20brett.svg" alt="Crazy Brett">
+            <div class="profile-name">CRAZY</div>
+          </div>
+          <div class="profile-option" data-profile="shady%20brett.svg">
+            <img src="assets/shady%20brett.svg" alt="Shady Brett">
+            <div class="profile-name">SHADY</div>
+          </div>
+          <div class="profile-option" data-profile="grok%20brett.svg">
+            <img src="assets/grok%20brett.svg" alt="Grok Brett">
+            <div class="profile-name">GROK</div>
+          </div>
+          <div class="profile-option" data-profile="bonked%20brett.svg">
+            <img src="assets/bonked%20brett.svg" alt="Bonked Brett">
+            <div class="profile-name">BONKED</div>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" class="submit-btn">CREATE ACCOUNT</button>
+    </form>
+
+    <!-- Messages -->
+    <div id="error-message" class="error-message" style="display: none;"></div>
+    <div id="success-message" class="success-message" style="display: none;"></div>
+
+    <!-- Leaderboard Preview -->
+    <div class="leaderboard-preview">
+      <h3>🏆 TOP TRADERS</h3>
+      <div class="leaderboard-entry">
+        <span class="rank">#1</span>
+        <div class="user-info">
+          <img src="assets/brett%20head.png" alt="User" class="user-avatar">
+          <span class="username">CryptoKing</span>
+        </div>
+        <span class="profit">+156.7%</span>
+      </div>
+      <div class="leaderboard-entry">
+        <span class="rank">#2</span>
+        <div class="user-info">
+          <img src="assets/angry%20brett.svg" alt="User" class="user-avatar">
+          <span class="username">BrettHodler</span>
+        </div>
+        <span class="profit">+89.2%</span>
+      </div>
+      <div class="leaderboard-entry">
+        <span class="rank">#3</span>
+        <div class="user-info">
+          <img src="assets/crazy%20brett.svg" alt="User" class="user-avatar">
+          <span class="username">BonkMaster</span>
+        </div>
+        <span class="profit">+67.4%</span>
+      </div>
+    </div>
+
+    <!-- Back Link -->
+    <div class="back-link">
+              <a href="/main">← Back to Brett Website</a>
+    </div>
+  </div>
+
+  <script>
+    class UserSystem {
+      constructor() {
+        this.users = JSON.parse(localStorage.getItem('brettTradingUsers')) || [];
+        this.currentUser = JSON.parse(localStorage.getItem('brettTradingCurrentUser')) || null;
+        this.selectedProfile = 'brett%20head.png';
+        
+        this.init();
+      }
+      
+      init() {
+        this.setupEventListeners();
+        this.checkIfLoggedIn();
+      }
+      
+      setupEventListeners() {
+        // Form toggles
+        document.getElementById('login-toggle').addEventListener('click', () => this.showForm('login'));
+        document.getElementById('register-toggle').addEventListener('click', () => this.showForm('register'));
+        
+        // Form submissions
+        document.getElementById('login-form').addEventListener('submit', (e) => this.handleLogin(e));
+        document.getElementById('register-form').addEventListener('submit', (e) => this.handleRegister(e));
+        
+        // Profile selection
+        document.querySelectorAll('.profile-option').forEach(option => {
+          option.addEventListener('click', (e) => {
+            document.querySelectorAll('.profile-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            this.selectedProfile = option.dataset.profile;
+          });
+        });
+      }
+      
+      showForm(type) {
+        document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(form => form.style.display = 'none');
+        
+        if (type === 'login') {
+          document.getElementById('login-toggle').classList.add('active');
+          document.getElementById('login-form').style.display = 'block';
+        } else {
+          document.getElementById('register-toggle').classList.add('active');
+          document.getElementById('register-form').style.display = 'block';
+        }
+        
+        this.hideMessages();
+      }
+      
+      handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value;
+        
+        if (!username || !password) {
+          this.showError('Please fill in all fields');
+          return;
+        }
+        
+        const user = this.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+        
+        if (!user) {
+          this.showError('Username not found');
+          return;
+        }
+        
+        if (user.password !== password) { // In real app, use proper hashing
+          this.showError('Incorrect password');
+          return;
+        }
+        
+        this.currentUser = user;
+        localStorage.setItem('brettTradingCurrentUser', JSON.stringify(user));
+        this.showSuccess('Login successful! Redirecting...');
+        
+        setTimeout(() => {
+          window.location.href = '/trading-simulator';
+        }, 1500);
+      }
+      
+      handleRegister(e) {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value.trim();
+        const password = document.getElementById('register-password').value;
+        const email = document.getElementById('register-email').value.trim();
+        
+        if (!username || !password) {
+          this.showError('Please fill in username and password');
+          return;
+        }
+        
+        if (username.length < 3) {
+          this.showError('Username must be at least 3 characters');
+          return;
+        }
+        
+        if (password.length < 6) {
+          this.showError('Password must be at least 6 characters');
+          return;
+        }
+        
+        // Check if username already exists
+        if (this.users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
+          this.showError('Username already exists');
+          return;
+        }
+        
+        // Create new user
+        const newUser = {
+          id: Date.now(),
+          username: username,
+          password: password, // In real app, hash this
+          email: email,
+          profilePicture: this.selectedProfile,
+          balance: 10000, // Starting virtual balance
+          trades: [],
+          achievements: [],
+          joinDate: new Date().toISOString(),
+          totalProfit: 0,
+          totalTrades: 0
+        };
+        
+        this.users.push(newUser);
+        localStorage.setItem('brettTradingUsers', JSON.stringify(this.users));
+        
+        this.showSuccess('Account created successfully! You can now login.');
+        this.showForm('login');
+      }
+      
+      checkIfLoggedIn() {
+        if (this.currentUser) {
+          window.location.href = '/trading-simulator';
+        }
+      }
+      
+      showError(message) {
+        this.hideMessages();
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+      }
+      
+      showSuccess(message) {
+        this.hideMessages();
+        const successDiv = document.getElementById('success-message');
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+      }
+      
+      hideMessages() {
+        document.getElementById('error-message').style.display = 'none';
+        document.getElementById('success-message').style.display = 'none';
+      }
+    }
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new UserSystem();
+    });
+  </script>
+</body>
+</html> 

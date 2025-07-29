@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brett on Bonk | The Ultimate Meme Coin</title>
+  <meta name="description" content="The official home of Brett on Bonk. Play games, create memes, and join the most legendary meme coin community. #Brett #Bonk #Crypto">
+  <link rel="canonical" href="https://brettonbonk.com/main">
+  <meta property="og:title" content="Brett on Bonk | The Ultimate Meme Coin">
+  <meta property="og:description" content="The official home of Brett on Bonk. Play games, create memes, and join the most legendary meme coin community.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/main">
+  <meta property="og:image" content="https://brettonbonk.com/assets/Brett%20Head.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brett on Bonk | The Ultimate Meme Coin">
+  <meta name="twitter:description" content="The official home of Brett on Bonk. Play games, create memes, and join the most legendary meme coin community.">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/Brett%20Head.png">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="assets/brett%20font.ttf" as="font" type="font/ttf" crossorigin>
+  <!-- Cropper.js CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+  <script defer src="script.js"></script>
+  <!-- Cropper.js JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+</head>
+<body>
+      <button id="music-toggle-btn" style="position:fixed;top:1.5rem;left:2rem;z-index:3001;" aria-label="Toggle background music">MUTE</button>
+  <audio id="bg-music" src="assets/brett%20song.mp3" autoplay loop></audio>
+  <div id="site-loader" class="site-loader-overlay">
+    <img src="assets/brett%20head.png" alt="Loading..." class="site-loader-img" />
+  </div>
+  <div class="hamburger-menu">
+    <button id="hamburger-btn" aria-label="Open menu">MENU</button>
+    <div id="dropdown-menu" class="dropdown-menu">
+      <button id="close-menu-btn" class="close-menu-btn" title="Close the menu">CLOSE MENU</button>
+      <a href="#about" title="Learn about Brett">About</a>
+      <a href="#contract" title="View the contract address">Contract</a>
+      <a href="#brettonomics" title="See tokenomics">Brettonomics</a>
+      <a href="#socials" title="Find Brett's socials">Socials</a>
+      <a href="#pfp-generator" title="Create your Brett PFP">PFP Generator</a>
+      <button id="tools-menu-btn" class="menu-btn" title="Brett's Tools">Tools</button>
+      <button id="games-menu-btn" class="menu-btn" title="Play Brett's Games">Games</button>
+      <a href="/chad-meter" target="_blank" rel="noopener noreferrer" title="Check your CHAD score">CHAD Meter</a>
+    </div>
+
+    <!-- Tools Popup -->
+    <div id="tools-popup" class="tools-popup">
+      <div class="tools-popup-content">
+        <button id="close-tools-btn" class="close-tools-btn" title="Close tools menu">×</button>
+        <h3 class="tools-popup-title">BRETT'S TOOLS</h3>
+        <div class="tools-list">
+          <a href="/brett-calculator" class="tool-link" title="Calculate BRETT token value">
+            <span class="tool-name">BRETT Calculator</span>
+          </a>
+          <a href="/meme-generator" class="tool-link" title="Create Brett memes">
+            <span class="tool-name">Meme Generator</span>
+          </a>
+          <a href="/wallpaper-generator" class="tool-link" title="Create Brett wallpapers">
+            <span class="tool-name">Wallpaper Generator</span>
+          </a>
+          <a href="https://t.me/BrettOnBoardingBot" target="_blank" rel="noopener noreferrer" class="tool-link" title="Join Brett's Onboarding Bot">
+            <span class="tool-name">Onboarding Bot</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Popup -->
+    <div id="games-popup" class="games-popup">
+      <div class="games-popup-content">
+        <button id="close-games-btn" class="close-games-btn" title="Close games menu">×</button>
+        <h3 class="games-popup-title">BRETT'S GAMES</h3>
+        <div class="games-list">
+          <a href="/login" class="game-link" title="Play Brett's Trading Bot Simulator">
+            <span class="game-name">🎮 Trading Bot Simulator</span>
+          </a>
+          <a href="/bonk-the-brett" target="_blank" rel="noopener noreferrer" class="game-link" title="Play Bonk the Brett Game">
+            <span class="game-name">Bonk The Brett Game</span>
+          </a>
+          <a href="/hangman" target="_blank" rel="noopener noreferrer" class="game-link" title="Play Brett's Hangman">
+            <span class="game-name">Brett's Hangman</span>
+          </a>
+          <a href="https://bonkman.brettonbonk.com" target="_blank" rel="noopener noreferrer" class="game-link" title="Play Brett's BonkMan">
+            <span class="game-name">Brett's BonkMan</span>
+          </a>
+          <a href="https://payday.brettonbonk.com" target="_blank" rel="noopener noreferrer" class="game-link" title="Play Payday">
+            <span class="game-name">Payday</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section id="hero" class="section hero-section">
+    <div class="hero-content">
+      <img src="assets/brett%20head.png" alt="Brett Head" class="brett-head-img" />
+      <h1 class="hero-title">OG BRETT</h1>
+      <h2 class="hero-subtitle">LET'S GET BONKED</h2>
+      <div class="hero-buttons">
+        <a href="https://raydium.io/swap/" class="hero-btn" target="_blank" rel="noopener noreferrer">Buy Brett</a>
+        <a href="https://dexscreener.com/" class="hero-btn" target="_blank" rel="noopener noreferrer">Dexscreener</a>
+      </div>
+      <div class="hero-instruction">CLICK BONKING BRETT AT BOTTOM RIGHT OF YOUR SCREEN.</div>
+    </div>
+  </section>
+  <section class="section marquee-section second-marquee">
+    <div class="marquee">
+      <div class="marquee-inner">
+        <span class="marquee-text">OG BRETT</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">BONK OR BE BONKED</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">OG BRETT</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">BONK OR BE BONKED</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">OG BRETT</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">BONK OR BE BONKED</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">OG BRETT</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+        <span class="marquee-text">BONK OR BE BONKED</span>
+        <img src="assets/brett%20head.png" alt="Brett Head Icon" class="marquee-icon" />
+      </div>
+    </div>
+  </section>
+  <section id="about" class="section about-section">
+    <h2 class="section-title">ABOUT BRETT</h2>
+    <p class="about-desc">BRETT IS THE LEGENDARY CHARACTER FROM MATT FURIE'S BOYS' CLUB. HE IS A SOCIAL MEDIA INFLUENCER AND GROK LOVER, NOW HE IS LIVING IN LONDON, FOR HIS STAR SHOW 'LIVING WIF BRETT' SOON TO BE PREMIERING ON XORIGINALS.</p>
+    <div class="about-img-box">
+      <img src="assets/about%20brett%20picture.png" alt="About Brett" class="about-img" />
+    </div>
+  </section>
+  <section id="contract" class="section contract-section">
+    <h2 class="section-title">Contract Address</h2>
+    <div class="contract-box" id="contract-address">OXBRETT1331</div>
+    <div class="copy-message" id="copyMsg">Copied!</div>
+  </section>
+  <section id="brettonomics" class="section brettonomics-section">
+    <h2 class="section-title">Brettonomics</h2>
+    <div class="brettonomics-cards">
+      <div class="brettonomics-card">1 BILLION SUPPLY</div>
+      <div class="brettonomics-card">0% TAX</div>
+      <div class="brettonomics-card">LP BURNED</div>
+      <div class="brettonomics-card">100% CHAD APPROVED</div>
+    </div>
+  </section>
+  <section id="socials" class="section socials-section">
+    <h2 class="section-title">Socials</h2>
+    <div class="social-links">
+      <a href="https://x.com/BrettOnBonk" target="_blank" rel="noopener noreferrer" class="social-btn">Official X</a>
+      <a href="https://x.com/i/communities/1946299447132209404" target="_blank" rel="noopener noreferrer" class="social-btn">X Community</a>
+      <a href="https://t.me/bonkingbrettbot" target="_blank" rel="noopener noreferrer" class="social-btn">Bonking Brett Bot</a>
+      <a href="https://t.me/BrettOnBoardingBot" target="_blank" rel="noopener noreferrer" class="social-btn">Onboarding Bot</a>
+      <a href="https://www.youtube.com/watch?v=0wZpZroZAk0&feature=youtu.be" target="_blank" rel="noopener noreferrer" class="social-btn">Bonk Studios</a>
+    </div>
+  </section>
+  <section id="pfp-generator" class="section pfp-generator-section">
+    <h2 class="section-title">PFP Generator</h2>
+    <div class="pfp-controls">
+      <label for="profile-upload" class="pfp-label" title="Upload your profile picture">Upload your profile picture.</label>
+      <input type="file" id="profile-upload" accept="image/png, image/jpeg" title="Choose an image to upload" />
+      <div class="pfp-characters-carousel">
+        <button class="carousel-arrow" id="char-left">&#8592;</button>
+        <span class="pfp-characters-label">Select a character:</span>
+        <div class="pfp-character-view">
+          <button class="pfp-char-btn" id="carousel-char-btn" data-name="Grok Brett" data-src="assets/grok%20brett.svg"><img src="assets/grok%20brett.svg" alt="Grok Brett" /></button>
+        </div>
+        <button class="carousel-arrow" id="char-right">&#8594;</button>
+      </div>
+      <div id="selected-character-label" class="selected-character-label">
+        <span class="selected-label">SELECTED</span>
+        <div class="selected-char-name" id="selected-char-name"></div>
+      </div>
+    </div>
+    <div class="pfp-preview-container">
+      <canvas id="pfp-canvas" width="400" height="400"></canvas>
+    </div>
+    <div class="pfp-actions">
+      <button id="download-profile" class="hero-btn" title="Download your PFP">Download</button>
+      <button id="share-x" class="hero-btn" title="Share your PFP on X">Share on X</button>
+    </div>
+    <div id="download-error" class="download-error"></div>
+  </section>
+
+  <!-- Live Social Feed Section -->
+  <section id="social-feed" class="section social-feed-section">
+    <h2 class="section-title">🔥 LIVE BRETT FEED</h2>
+    <div class="social-feed-container">
+      <div class="feed-header">
+        <div class="feed-stats">
+          <span class="stat-item">
+            <span class="stat-number" id="follower-count">--</span>
+            <span class="stat-label">Followers</span>
+          </span>
+          <span class="stat-item">
+            <span class="stat-number" id="mention-count">--</span>
+            <span class="stat-label">Today's Mentions</span>
+          </span>
+        </div>
+        <button id="refresh-feed" class="refresh-btn" title="Refresh feed">🔄</button>
+      </div>
+      <div class="feed-content">
+        <div id="tweets-container" class="tweets-container">
+          <div class="loading-tweets">
+            <div class="loading-spinner"></div>
+            <p>Loading BRETT tweets...</p>
+          </div>
+        </div>
+      </div>
+      <div class="feed-footer">
+        <a href="https://x.com/BrettOnBonk" target="_blank" rel="noopener noreferrer" class="view-more-btn">
+          View More on X → 
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section marquee-section first-marquee">
+    <div class="marquee">
+      <div class="marquee-inner">
+        <span class="marquee-text">BRETT ON BONK</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">WE BONKING FAM</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">BRETT ON BONK</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">WE BONKING FAM</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">BRETT ON BONK</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">WE BONKING FAM</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">BRETT ON BONK</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+        <span class="marquee-text">WE BONKING FAM</span>
+        <img src="assets/bonked%20brett.svg" alt="Bonked Brett Icon" class="marquee-icon" />
+      </div>
+    </div>
+  </section>
+  <section id="disclaimer" class="section disclaimer-section">
+    <h2 class="section-title">Disclaimer</h2>
+    <p>HIS TOKEN IS ONLY SUPPOSED TO BE HELD BY CHADS. SO, GET BONKING!</p>
+  </section>
+  <!-- Bonked Brett Icon Bottom Right -->
+      <img src="assets/bonked%20brett.svg" alt="Bonked Brett" id="bonked-brett-btn" class="bonked-brett-bottom-right" />
+  <div id="bonked-popup" class="bonked-popup"></div>
+      <audio id="bonked-audio-cope" src="assets/i%20hope%20you%20cope%20hard.mp3" preload="auto"></audio>
+    <audio id="bonked-audio-jeet" src="assets/ouch%20that%20hurt!%20you%20jeet!.mp3" preload="auto"></audio>
+    <audio id="bonked-audio-hodl" src="assets/you%20better%20hodl.mp3" preload="auto"></audio>
+    <audio id="bonked-audio-mad" src="assets/you%20bonking%20mad.mp3" preload="auto"></audio>
+  <div id="cropper-modal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+    <div style="background:#222;padding:2rem 1.5rem;border-radius:18px;box-shadow:0 4px 32px #000;max-width:95vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+      <div style="width:320px;height:320px;max-width:80vw;max-height:60vw;overflow:hidden;">
+        <img id="cropper-image" src="" alt="Crop your image" style="max-width:100%;max-height:100%;display:block;" />
+      </div>
+      <button id="cropper-confirm" class="hero-btn" style="margin-top:1.2rem;">Use This Crop</button>
+    </div>
+  </div>
+  <!-- Back to Top Button -->
+  <button id="back-to-top" title="Back to top" style="display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:1.2rem;z-index:3002;background:rgba(255,211,0,0.75);color:#fff;font-family:'Bangers',cursive,sans-serif;font-size:1.1rem;font-weight:bold;border:none;border-radius:50%;width:38px;height:38px;box-shadow:0 2px 8px rgba(0,0,0,0.10);cursor:pointer;opacity:0.65;transition:opacity 0.2s, background 0.2s;">↑</button>
+  <style>
+    #back-to-top:hover {
+      opacity: 1 !important;
+      background: #FFD300 !important;
+    }
+  </style>
+  <script>
+    // Back to Top Button Logic
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        backToTopBtn.style.display = 'block';
+        backToTopBtn.style.opacity = '1';
+      } else {
+        backToTopBtn.style.opacity = '0';
+        setTimeout(() => { if (backToTopBtn.style.opacity === '0') backToTopBtn.style.display = 'none'; }, 200);
+      }
+    });
+    backToTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    // Redirect #pfp-generator to /pfp-generator for legacy/bookmarked links
+    if (window.location.hash === '#pfp-generator') {
+      window.location.href = '/pfp-generator';
+    }
+  </script>
+</body>
+</html>

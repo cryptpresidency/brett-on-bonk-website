@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brett's Wallpaper Generator | Brett on Bonk</title>
+  <meta name="description" content="Create epic Brett-themed wallpapers for your phone and desktop. Choose characters, backgrounds, and add custom text!">
+  <link rel="canonical" href="https://brettonbonk.com/wallpaper-generator">
+  <meta property="og:title" content="Brett's Wallpaper Generator | Brett on Bonk">
+  <meta property="og:description" content="Create epic Brett-themed wallpapers for your phone and desktop. Choose characters, backgrounds, and add custom text!">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/wallpaper-generator">
+  <meta property="og:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brett's Wallpaper Generator | Brett on Bonk">
+  <meta name="twitter:description" content="Create epic Brett-themed wallpapers for your phone and desktop. Choose characters, backgrounds, and add custom text!">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preload" href="assets/brett%20font.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    .wallpaper-generator-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      min-height: 100vh;
+    }
+
+    .wallpaper-generator-title {
+      text-align: center;
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 0px #000;
+    }
+
+    .wallpaper-generator-subtitle {
+      text-align: center;
+      color: #fff;
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      font-family: 'Bangers', cursive;
+    }
+
+    .wallpaper-workspace {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .wallpaper-controls {
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 15px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      height: fit-content;
+    }
+
+    .wallpaper-preview {
+      background: #000;
+      border: 3px solid #FFD300;
+      border-radius: 15px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 600px;
+      position: relative;
+    }
+
+    .control-section {
+      margin-bottom: 2rem;
+    }
+
+    .control-section h3 {
+      color: #FFD300;
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .character-option {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .character-option:hover {
+      border-color: #FFD300;
+      background: rgba(255, 211, 0, 0.2);
+    }
+
+    .character-option.selected {
+      border-color: #FFD300;
+      background: rgba(255, 211, 0, 0.3);
+    }
+
+    .character-option img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+
+    .character-option .character-name {
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .background-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .background-option {
+      height: 80px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .background-option:hover {
+      border-color: #FFD300;
+      transform: scale(1.05);
+    }
+
+    .background-option.selected {
+      border-color: #FFD300;
+      box-shadow: 0 0 15px rgba(255, 211, 0, 0.5);
+    }
+
+    .background-option .bg-name {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 0px #000;
+    }
+
+    .text-controls {
+      margin-bottom: 1rem;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .text-input::placeholder {
+      color: #ccc;
+    }
+
+    .quick-text-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .quick-text-btn {
+      padding: 0.5rem;
+      border: 1px solid #FFD300;
+      border-radius: 5px;
+      background: rgba(255, 211, 0, 0.1);
+      color: #FFD300;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .quick-text-btn:hover {
+      background: rgba(255, 211, 0, 0.3);
+    }
+
+    .size-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .size-btn {
+      padding: 0.8rem;
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      background: rgba(255, 211, 0, 0.1);
+      color: #FFD300;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .size-btn:hover {
+      background: rgba(255, 211, 0, 0.3);
+    }
+
+    .size-btn.selected {
+      background: #FFD300;
+      color: #000;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .action-btn {
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .download-btn {
+      background: linear-gradient(45deg, #FFD300, #FFA500);
+      color: #000;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 211, 0, 0.4);
+    }
+
+    .share-btn {
+      background: linear-gradient(45deg, #1DA1F2, #0D8BD9);
+      color: #fff;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
+    }
+
+    .wallpaper-canvas {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .canvas-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+      .wallpaper-workspace {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .wallpaper-generator-title {
+        font-size: 2rem;
+      }
+      
+      .character-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .background-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .wallpaper-canvas {
+        max-width: 100%;
+        height: auto;
+        transform: none !important;
+        transition: none !important;
+      }
+      
+      .canvas-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      
+      .wallpaper-preview {
+        min-height: 400px;
+        padding: 0.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .wallpaper-generator-container {
+        padding: 1rem;
+      }
+      
+      .wallpaper-controls {
+        padding: 1rem;
+      }
+      
+      .wallpaper-canvas {
+        max-width: 100%;
+        height: auto;
+        transform: none !important;
+        transition: none !important;
+      }
+      
+      .wallpaper-preview {
+        min-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wallpaper-generator-container">
+    <h1 class="wallpaper-generator-title">🎨 BRETT'S WALLPAPER GENERATOR</h1>
+    <p class="wallpaper-generator-subtitle">Create epic wallpapers with your favourite Brett characters!</p>
+
+    <div class="wallpaper-workspace">
+      <!-- Controls Panel -->
+      <div class="wallpaper-controls">
+        <!-- Character Selection -->
+        <div class="control-section">
+          <h3>🎭 Choose Brett Character</h3>
+          <div class="character-grid">
+            <div class="character-option selected" data-character="brett%20head.png">
+              <img src="assets/brett%20head.png" alt="OG Brett">
+              <div class="character-name">OG BRETT</div>
+            </div>
+            <div class="character-option" data-character="angry%20brett.svg">
+              <img src="assets/angry%20brett.svg" alt="Angry Brett">
+              <div class="character-name">ANGRY</div>
+            </div>
+            <div class="character-option" data-character="crazy%20brett.svg">
+              <img src="assets/crazy%20brett.svg" alt="Crazy Brett">
+              <div class="character-name">CRAZY</div>
+            </div>
+            <div class="character-option" data-character="shady%20brett.svg">
+              <img src="assets/shady%20brett.svg" alt="Shady Brett">
+              <div class="character-name">SHADY</div>
+            </div>
+            <div class="character-option" data-character="grok%20brett.svg">
+              <img src="assets/grok%20brett.svg" alt="Grok Brett">
+              <div class="character-name">GROK</div>
+            </div>
+            <div class="character-option" data-character="bonked%20brett.svg">
+              <img src="assets/bonked%20brett.svg" alt="Bonked Brett">
+              <div class="character-name">BONKED</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Background Selection -->
+        <div class="control-section">
+          <h3>🌌 Choose Background</h3>
+          <div class="background-grid">
+            <div class="background-option selected" data-bg="space" style="background: linear-gradient(135deg, #0B0B23 0%, #1a1a2e 50%, #16213e 100%);">
+              <div class="bg-name">SPACE</div>
+            </div>
+            <div class="background-option" data-bg="neon" style="background: linear-gradient(135deg, #FF006E 0%, #8338EC 50%, #3A86FF 100%);">
+              <div class="bg-name">NEON</div>
+            </div>
+            <div class="background-option" data-bg="gold" style="background: linear-gradient(135deg, #FFD300 0%, #FFA500 50%, #FF8C00 100%);">
+              <div class="bg-name">GOLD</div>
+            </div>
+            <div class="background-option" data-bg="dark" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%);">
+              <div class="bg-name">DARK</div>
+            </div>
+            <div class="background-option" data-bg="purple" style="background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 50%, #9C27B0 100%);">
+              <div class="bg-name">PURPLE</div>
+            </div>
+            <div class="background-option" data-bg="green" style="background: linear-gradient(135deg, #2E7D32 0%, #388E3C 50%, #4CAF50 100%);">
+              <div class="bg-name">GREEN</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Controls -->
+        <div class="control-section">
+          <h3>💬 Add Custom Text</h3>
+          <input type="text" class="text-input" id="custom-text" placeholder="Enter your text here..." maxlength="50">
+          
+          <div class="quick-text-buttons">
+            <button class="quick-text-btn" data-text="BONK OR BE BONKED">BONK OR BE BONKED</button>
+            <button class="quick-text-btn" data-text="OG BRETT">OG BRETT</button>
+            <button class="quick-text-btn" data-text="WE BONKING FAM">WE BONKING FAM</button>
+            <button class="quick-text-btn" data-text="BRETT ON BONK">BRETT ON BONK</button>
+            <button class="quick-text-btn" data-text="HODL">HODL</button>
+            <button class="quick-text-btn" data-text="TO THE MOON">TO THE MOON</button>
+          </div>
+        </div>
+
+        <!-- Size Controls -->
+        <div class="control-section">
+          <h3>📱 Choose Size</h3>
+          <div class="size-controls">
+            <button class="size-btn selected" data-size="phone">Phone</button>
+            <button class="size-btn" data-size="tablet">Tablet</button>
+            <button class="size-btn" data-size="desktop">Desktop</button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="action-btn download-btn" id="download-btn">📥 DOWNLOAD</button>
+          <button class="action-btn share-btn" id="share-btn">📤 SHARE</button>
+        </div>
+      </div>
+
+      <!-- Preview Panel -->
+      <div class="wallpaper-preview">
+        <div class="canvas-container">
+          <canvas id="wallpaper-canvas" class="wallpaper-canvas" width="400" height="800"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class WallpaperGenerator {
+      constructor() {
+        this.canvas = document.getElementById('wallpaper-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.currentCharacter = 'brett%20head.png';
+        this.currentBackground = 'space';
+        this.currentText = '';
+        this.currentSize = 'phone';
+        
+        this.sizes = {
+          phone: { width: 400, height: 800 },
+          tablet: { width: 600, height: 800 },
+          desktop: { width: 1920, height: 1080 }
+        };
+        
+        this.backgrounds = {
+          space: 'linear-gradient(135deg, #0B0B23 0%, #1a1a2e 50%, #16213e 100%)',
+          neon: 'linear-gradient(135deg, #FF006E 0%, #8338EC 50%, #3A86FF 100%)',
+          gold: 'linear-gradient(135deg, #FFD300 0%, #FFA500 50%, #FF8C00 100%)',
+          dark: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #404040 100%)',
+          purple: 'linear-gradient(135deg, #4A148C 0%, #7B1FA2 50%, #9C27B0 100%)',
+          green: 'linear-gradient(135deg, #2E7D32 0%, #388E3C 50%, #4CAF50 100%)'
+        };
+        
+        this.init();
+      }
+      
+      init() {
+        this.setupEventListeners();
+        this.render();
+      }
+      
+      setupEventListeners() {
+        // Character selection
+        document.querySelectorAll('.character-option').forEach(option => {
+          option.addEventListener('click', (e) => {
+            document.querySelectorAll('.character-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            this.currentCharacter = option.dataset.character;
+            this.render();
+          });
+        });
+        
+        // Background selection
+        document.querySelectorAll('.background-option').forEach(option => {
+          option.addEventListener('click', (e) => {
+            document.querySelectorAll('.background-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            this.currentBackground = option.dataset.bg;
+            this.render();
+          });
+        });
+        
+        // Text input
+        document.getElementById('custom-text').addEventListener('input', (e) => {
+          this.currentText = e.target.value;
+          this.render();
+        });
+        
+        // Quick text buttons
+        document.querySelectorAll('.quick-text-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            this.currentText = btn.dataset.text;
+            document.getElementById('custom-text').value = this.currentText;
+            this.render();
+          });
+        });
+        
+        // Size selection
+        document.querySelectorAll('.size-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            this.currentSize = btn.dataset.size;
+            this.updateCanvasSize();
+            this.render();
+          });
+        });
+        
+        // Download button
+        document.getElementById('download-btn').addEventListener('click', () => {
+          this.downloadWallpaper();
+        });
+        
+        // Share button
+        document.getElementById('share-btn').addEventListener('click', () => {
+          this.shareWallpaper();
+        });
+      }
+      
+      updateCanvasSize() {
+        const size = this.sizes[this.currentSize];
+        this.canvas.width = size.width;
+        this.canvas.height = size.height;
+        
+        // Prevent mobile zoom issues
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = 'auto';
+        this.canvas.style.maxWidth = '400px';
+      }
+      
+      render() {
+        const size = this.sizes[this.currentSize];
+        this.canvas.width = size.width;
+        this.canvas.height = size.height;
+        
+        // Prevent mobile zoom issues
+        this.canvas.style.width = '100%';
+        this.canvas.style.height = 'auto';
+        this.canvas.style.maxWidth = '400px';
+        
+        // Clear canvas
+        this.ctx.clearRect(0, 0, size.width, size.height);
+        
+        // Draw background
+        this.drawBackground();
+        
+        // Draw character
+        this.drawCharacter();
+        
+        // Draw text
+        if (this.currentText) {
+          this.drawText();
+        }
+      }
+      
+      drawBackground() {
+        const size = this.sizes[this.currentSize];
+        const gradient = this.ctx.createLinearGradient(0, 0, size.width, size.height);
+        
+        const bgColors = this.backgrounds[this.currentBackground];
+        const colors = bgColors.match(/#[0-9A-Fa-f]{6}/g);
+        
+        if (colors && colors.length >= 3) {
+          gradient.addColorStop(0, colors[0]);
+          gradient.addColorStop(0.5, colors[1]);
+          gradient.addColorStop(1, colors[2]);
+        } else {
+          gradient.addColorStop(0, '#0B0B23');
+          gradient.addColorStop(0.5, '#1a1a2e');
+          gradient.addColorStop(1, '#16213e');
+        }
+        
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, size.width, size.height);
+      }
+      
+      drawCharacter() {
+        const size = this.sizes[this.currentSize];
+        const img = new Image();
+        
+        img.onload = () => {
+          const scale = this.currentSize === 'phone' ? 0.4 : this.currentSize === 'tablet' ? 0.5 : 0.3;
+          const charWidth = size.width * scale;
+          const charHeight = charWidth * (img.height / img.width);
+          const x = (size.width - charWidth) / 2;
+          const y = size.height - charHeight - (size.height * 0.1);
+          
+          this.ctx.drawImage(img, x, y, charWidth, charHeight);
+          
+          // Redraw text after character loads
+          if (this.currentText) {
+            this.drawText();
+          }
+        };
+        
+        img.src = `assets/${this.currentCharacter}`;
+      }
+      
+      drawText() {
+        const size = this.sizes[this.currentSize];
+        const fontSize = this.currentSize === 'phone' ? 32 : this.currentSize === 'tablet' ? 40 : 60;
+        
+        this.ctx.font = `bold ${fontSize}px 'Bangers', cursive`;
+        this.ctx.fillStyle = '#FFD300';
+        this.ctx.strokeStyle = '#000';
+        this.ctx.lineWidth = 3;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        
+        const x = size.width / 2;
+        const y = size.height * 0.2;
+        
+        // Draw stroke
+        this.ctx.strokeText(this.currentText, x, y);
+        // Draw fill
+        this.ctx.fillText(this.currentText, x, y);
+      }
+      
+      downloadWallpaper() {
+        const link = document.createElement('a');
+        link.download = `brett-wallpaper-${this.currentSize}.png`;
+        link.href = this.canvas.toDataURL();
+        link.click();
+      }
+      
+      shareWallpaper() {
+        if (navigator.share) {
+          this.canvas.toBlob((blob) => {
+            const file = new File([blob], 'brett-wallpaper.png', { type: 'image/png' });
+            navigator.share({
+              title: 'Brett Wallpaper',
+              text: 'Check out my custom Brett wallpaper!',
+              files: [file]
+            });
+          });
+        } else {
+          // Fallback: copy to clipboard
+          this.canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `brett-wallpaper-${this.currentSize}.png`;
+            link.click();
+            URL.revokeObjectURL(url);
+          });
+        }
+      }
+    }
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      new WallpaperGenerator();
+    });
+  </script>
+</body>
+</html> 

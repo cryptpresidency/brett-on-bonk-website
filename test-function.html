@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Netlify Function</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: white;
+    }
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .success { color: #4CAF50; }
+    .error { color: #f44336; }
+    .info { color: #2196F3; }
+    button {
+      background: #ffd700;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #ffed4e;
+    }
+    .result {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border-left: 4px solid #ffd700;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔧 Test Netlify Function</h1>
+  
+  <div class="test-section">
+    <h2>Test Function Connection</h2>
+    <button onclick="testFunction()">Test Netlify Function</button>
+    <div id="function-result" class="result">Click the button to test...</div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test X API Call</h2>
+    <button onclick="testXAPI()">Test X API via Function</button>
+    <div id="api-result" class="result">Click the button to test...</div>
+  </div>
+
+  <div class="test-section">
+    <h2>Debug Info</h2>
+    <div id="debug-info" class="result">
+      Current URL: <span id="current-url"></span><br>
+      Function URL: <span id="function-url"></span><br>
+      Status: <span id="status">Ready to test</span>
+    </div>
+  </div>
+
+  <script>
+    // Update debug info
+    document.getElementById('current-url').textContent = window.location.origin;
+    document.getElementById('function-url').textContent = window.location.origin + '/.netlify/functions/twitter-api';
+
+    async function testFunction() {
+      const resultDiv = document.getElementById('function-result');
+      const statusDiv = document.getElementById('status');
+      
+      resultDiv.textContent = 'Testing function connection...';
+      statusDiv.textContent = 'Testing...';
+      
+      try {
+        const response = await fetch('/.netlify/functions/twitter-api', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            endpoint: '/users/by/username/BrettOnBonk',
+            params: {
+              'user.fields': 'id,username,name'
+            }
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          resultDiv.textContent = '✅ Function Working!\n\nResponse:\n' + JSON.stringify(data, null, 2);
+          statusDiv.textContent = '✅ Function OK';
+        } else {
+          resultDiv.textContent = '❌ Function Error\n\nStatus: ' + response.status + '\nStatus Text: ' + response.statusText;
+          statusDiv.textContent = '❌ Function Error';
+        }
+      } catch (error) {
+        resultDiv.textContent = '❌ Function Not Found\n\nError: ' + error.message + '\n\nThis means the function is not deployed yet.';
+        statusDiv.textContent = '❌ Function Not Found';
+      }
+    }
+
+    async function testXAPI() {
+      const resultDiv = document.getElementById('api-result');
+      
+      resultDiv.textContent = 'Testing X API call...';
+      
+      try {
+        const response = await fetch('/.netlify/functions/twitter-api', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            endpoint: '/tweets/search/recent',
+            params: {
+              query: 'BRETT',
+              max_results: 3,
+              'tweet.fields': 'created_at,public_metrics,author_id'
+            }
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data && data.data.length > 0) {
+            resultDiv.textContent = '✅ Real X Data!\n\nFound ' + data.data.length + ' tweets:\n\n' + 
+              data.data.map(tweet => `• ${tweet.text.substring(0, 100)}...`).join('\n');
+          } else {
+            resultDiv.textContent = '✅ Function Working, No Tweets Found\n\nResponse:\n' + JSON.stringify(data, null, 2);
+          }
+        } else {
+          resultDiv.textContent = '❌ X API Error\n\nStatus: ' + response.status + '\nStatus Text: ' + response.statusText;
+        }
+      } catch (error) {
+        resultDiv.textContent = '❌ Function Error\n\nError: ' + error.message;
+      }
+    }
+
+    // Auto-test on page load
+    window.addEventListener('load', () => {
+      console.log('Page loaded, ready to test function');
+    });
+  </script>
+</body>
+</html> 

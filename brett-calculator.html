@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BRETT Token Calculator | Brett on Bonk</title>
+  <meta name="description" content="Calculate the USD value of your BRETT tokens. Use market cap and SOL pair methods to determine your token worth. #Brett #Bonk #Crypto">
+  <link rel="canonical" href="https://brettonbonk.com/brett-calculator">
+  <meta property="og:title" content="BRETT Token Calculator | Brett on Bonk">
+  <meta property="og:description" content="Calculate the USD value of your BRETT tokens. Use market cap and SOL pair methods to determine your token worth.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://brettonbonk.com/brett-calculator">
+  <meta property="og:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BRETT Token Calculator | Brett on Bonk">
+  <meta name="twitter:description" content="Calculate the USD value of your BRETT tokens. Use market cap and SOL pair methods to determine your token worth.">
+  <meta name="twitter:image" content="https://brettonbonk.com/assets/brett%20head.png">
+  <link rel="icon" type="image/png" href="assets/brett%20head.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #FFD300;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem;
+    }
+    .calculator-container {
+      background: rgba(34, 34, 34, 0.98);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      padding: 2.5rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    .bonk-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+    }
+    
+    .calculator-title {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 2.5rem;
+      color: #FFD300;
+      text-shadow: 2px 2px 0 #000, 4px 4px 8px #000;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .intro-modal {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .intro-modal-content {
+      background: rgba(34, 34, 34, 0.98);
+      border: 3px solid #FFD300;
+      border-radius: 18px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+    
+    .logo-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .intro-logo {
+      width: 50px;
+      height: 50px;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
+    }
+    
+    .intro-title {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 2rem;
+      color: #FFD300;
+      text-shadow: 2px 2px 0 #000, 4px 4px 8px #000;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .intro-modal-content p {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.1rem;
+      color: #fff;
+      text-shadow: 1px 1px 0 #000;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+    
+    .intro-modal-content strong {
+      color: #FFD300;
+    }
+    
+    .intro-modal-content em {
+      color: #ff6b6b;
+    }
+    
+    .intro-btn {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      background: #FFD300;
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 32px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 1.5rem;
+    }
+    
+    .intro-btn:hover {
+      background: #111;
+      color: #FFD300;
+    }
+    .input-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    .input-label {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .input-field {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #fff;
+      background: rgba(255, 211, 0, 0.2);
+    }
+    .price-info {
+      background: rgba(255, 211, 0, 0.1);
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .price-label {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1rem;
+      color: #FFD300;
+      margin-bottom: 0.5rem;
+    }
+    .price-value {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .result-box {
+      background: rgba(255, 211, 0, 0.2);
+      border: 3px solid #FFD300;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .result-label {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.3rem;
+      color: #FFD300;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0 #000;
+    }
+    .result-value {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000, 4px 4px 8px #000;
+      font-weight: bold;
+    }
+    
+    .percentage-box {
+      background: rgba(255, 211, 0, 0.15);
+      border: 2px solid #FFD300;
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .percentage-label {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.1rem;
+      color: #FFD300;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0 #000;
+    }
+    
+    .percentage-value {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000, 4px 4px 8px #000;
+      font-weight: bold;
+    }
+    .info-text {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .back-btn {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.2rem;
+      background: #FFD300;
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 1rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .back-btn:hover {
+      background: #111;
+      color: #FFD300;
+    }
+    
+    .method-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    
+    .method-btn {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1rem;
+      background: rgba(255, 211, 0, 0.2);
+      color: #fff;
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .method-btn.active {
+      background: #FFD300;
+      color: #111;
+    }
+    
+    .method-btn:hover {
+      background: rgba(255, 211, 0, 0.3);
+    }
+    
+    .method-btn.active:hover {
+      background: #FFD300;
+    }
+    
+    .method-section {
+      margin-top: 1rem;
+    }
+    
+    .comparison-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .comparison-btn {
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1rem;
+      background: rgba(255, 211, 0, 0.2);
+      color: #fff;
+      border: 2px solid #FFD300;
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .comparison-btn:hover {
+      background: rgba(255, 211, 0, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .comparison-btn.active {
+      background: #FFD300;
+      color: #111;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <img src="assets/BONK.svg" alt="BONK" class="bonk-logo" />
+    <div class="calculator-title">BRETT CALCULATOR</div>
+    
+    <!-- Intro Modal -->
+    <div id="intro-modal" class="intro-modal">
+      <div class="intro-modal-content">
+        <div class="logo-row">
+              <img src="assets/BASE.svg" alt="BASE" class="intro-logo" />
+    <img src="assets/BONK.svg" alt="BONK" class="intro-logo" />
+    <img src="assets/ETH.svg" alt="ETH" class="intro-logo" />
+        </div>
+        <h3 class="intro-title">Welcome to BRETT Calculator!</h3>
+        <p><strong>How to use:</strong> Enter your BRETT tokens and choose a calculation method. Use the ETH/BASE buttons to see what BONK would be worth at those market cap levels.</p>
+        <p><em>⚠️ All numbers are estimated figures and may vary due to market conditions.</em></p>
+        <button id="close-intro-btn" class="intro-btn">Got it!</button>
+      </div>
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label" for="brett-amount">YOUR BRETT TOKENS:</label>
+      <input type="number" id="brett-amount" class="input-field" placeholder="Enter amount of BRETT tokens" step="0.000001" min="0">
+    </div>
+    
+    <div class="price-info">
+      <div class="price-label">CALCULATION METHOD:</div>
+      <div class="method-buttons">
+        <button id="method-marketcap" class="method-btn active">Market Cap</button>
+        <button id="method-solpair" class="method-btn">SOL Pair</button>
+      </div>
+    </div>
+    
+    <!-- Market Cap Method -->
+    <div id="marketcap-method" class="method-section">
+          <div class="input-group">
+      <label class="input-label" for="market-cap-input">CURRENT MARKET CAP ($):</label>
+      <input type="number" id="market-cap-input" class="input-field" placeholder="Enter current market cap" step="0.01" min="0" value="1000000">
+    </div>
+    
+    <div class="comparison-buttons">
+      <button id="eth-mc-btn" class="comparison-btn">If BONK Reached ETH MC ATH</button>
+      <button id="base-mc-btn" class="comparison-btn">If BONK Reached BASE MC ATH</button>
+    </div>
+      
+      <div class="price-info">
+        <div class="price-label">Total BRETT Supply:</div>
+        <div class="price-value" id="total-supply">1,000,000,000</div>
+      </div>
+    </div>
+    
+    <!-- SOL Pair Method -->
+    <div id="solpair-method" class="method-section" style="display:none;">
+      <div class="input-group">
+        <label class="input-label" for="tokens-per-sol">TOKENS PER 1 SOL:</label>
+        <input type="number" id="tokens-per-sol" class="input-field" placeholder="e.g., 5000 tokens for 1 SOL" step="0.01" min="0" value="5000">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label" for="sol-price-input">SOL PRICE ($):</label>
+        <input type="number" id="sol-price-input" class="input-field" placeholder="Current SOL price" step="0.01" min="0" value="180">
+      </div>
+    </div>
+    
+    <div class="result-box">
+      <div class="result-label">YOUR BRETT TOKENS ARE WORTH:</div>
+      <div class="result-value" id="usd-value">$0.00</div>
+    </div>
+    
+    <div class="percentage-box">
+      <div class="percentage-label">PERCENTAGE OF TOTAL SUPPLY:</div>
+      <div class="percentage-value" id="percentage-owned">0.0000%</div>
+    </div>
+    
+    <div class="info-text">
+      * This calculator estimates USD value based on current market conditions.<br>
+      * Prices may vary due to market fluctuations and trading fees.
+    </div>
+    
+            <a href="/main" class="back-btn">Back to Brett</a>
+  </div>
+  
+  <script src="brett-calculator.js"></script>
+</body>
+</html> 

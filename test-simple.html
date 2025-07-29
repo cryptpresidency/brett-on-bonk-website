@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Social Feed Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1a1a1a;
+      color: white;
+    }
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .success { color: #4CAF50; }
+    .error { color: #f44336; }
+    .info { color: #2196F3; }
+    button {
+      background: #ffd700;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #ffed4e;
+    }
+    .tweet-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 10px 0;
+    }
+    .tweet-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .tweet-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 1rem;
+      border: 2px solid #ffd700;
+    }
+    .tweet-username {
+      font-weight: bold;
+      color: #ffffff;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+    .tweet-handle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+    .tweet-content {
+      color: #ffffff;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    .tweet-actions {
+      display: flex;
+      gap: 2rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+    .tweet-action {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐦 Simple Social Feed Test</h1>
+  
+  <div class="test-section">
+    <h2>Test Social Feed</h2>
+    <button onclick="testSocialFeed()">Test Social Feed</button>
+    <div id="test-result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Mock Tweets Display</h2>
+    <div id="mock-tweets"></div>
+  </div>
+
+  <script>
+    // Simplified TwitterAPI class
+    class SimpleTwitterAPI {
+      constructor() {
+        console.log('SimpleTwitterAPI created');
+      }
+
+      async initialize() {
+        console.log('SimpleTwitterAPI initialized');
+        return true;
+      }
+
+      getMockTweets() {
+        return [
+          {
+            id: '1',
+            text: '🚀 BRETT just hit another ATH! The community is absolutely BONKING! 💎🙌 #Brett #Bonk #Crypto',
+            author_id: '123456789',
+            created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+            public_metrics: {
+              retweet_count: 45,
+              reply_count: 12,
+              like_count: 234,
+              quote_count: 8
+            }
+          },
+          {
+            id: '2',
+            text: 'Just created the most epic BRETT meme! The community is going to love this one! 🎨🔥 #BrettMeme #Bonk',
+            author_id: '123456789',
+            created_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+            public_metrics: {
+              retweet_count: 67,
+              reply_count: 23,
+              like_count: 456,
+              quote_count: 15
+            }
+          },
+          {
+            id: '3',
+            text: 'New game alert! 🎮 Brett\'s BonkMan is now live! Test your skills and compete with the community! #BrettGames #Bonk',
+            author_id: '123456789',
+            created_at: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+            public_metrics: {
+              retweet_count: 89,
+              reply_count: 34,
+              like_count: 678,
+              quote_count: 23
+            }
+          }
+        ];
+      }
+
+      async getTweets() {
+        console.log('Getting mock tweets');
+        return this.getMockTweets();
+      }
+
+      async getUserInfo() {
+        console.log('Getting mock user info');
+        return {
+          id: '123456789',
+          username: 'BrettOnBonk',
+          name: 'OG BRETT',
+          public_metrics: { followers_count: 15420 },
+          profile_image_url: 'assets/brett%20head.png'
+        };
+      }
+    }
+
+    // Simplified SocialFeedManager
+    class SimpleSocialFeedManager {
+      constructor() {
+        this.twitterAPI = new SimpleTwitterAPI();
+        this.tweetsContainer = document.getElementById('mock-tweets');
+        console.log('SimpleSocialFeedManager created');
+        console.log('tweetsContainer:', this.tweetsContainer);
+      }
+
+      async initialize() {
+        console.log('Initializing simple social feed...');
+        await this.twitterAPI.initialize();
+        await this.loadFeed();
+        console.log('Simple social feed initialized!');
+      }
+
+      async loadFeed() {
+        console.log('Loading feed...');
+        try {
+          const tweets = await this.twitterAPI.getTweets();
+          this.displayTweets(tweets);
+          console.log('Feed loaded successfully!');
+        } catch (error) {
+          console.error('Error loading feed:', error);
+        }
+      }
+
+      displayTweets(tweets) {
+        if (!this.tweetsContainer) {
+          console.error('tweetsContainer not found!');
+          return;
+        }
+
+        console.log('Displaying tweets:', tweets.length);
+
+        if (tweets.length === 0) {
+          this.tweetsContainer.innerHTML = '<div style="color: rgba(255,255,255,0.6);">No tweets found.</div>';
+          return;
+        }
+
+        const tweetsHTML = tweets.map(tweet => this.createTweetHTML(tweet)).join('');
+        this.tweetsContainer.innerHTML = tweetsHTML;
+        console.log('Tweets displayed!');
+      }
+
+      createTweetHTML(tweet) {
+        const timeAgo = this.getTimeAgo(tweet.created_at);
+        const metrics = tweet.public_metrics || {};
+
+        return `
+          <div class="tweet-item">
+            <div class="tweet-header">
+              <img src="assets/brett%20head.png" alt="Brett" class="tweet-avatar">
+              <div style="flex: 1;">
+                <div class="tweet-username">OG BRETT</div>
+                <div class="tweet-handle">@BrettOnBonk</div>
+              </div>
+              <div style="color: rgba(255,255,255,0.5); font-size: 0.8rem;">${timeAgo}</div>
+            </div>
+            <div class="tweet-content">${this.formatTweetText(tweet.text)}</div>
+            <div class="tweet-actions">
+              <div class="tweet-action">
+                <span>💬</span>
+                <span>${this.formatNumber(metrics.reply_count || 0)}</span>
+              </div>
+              <div class="tweet-action">
+                <span>🔄</span>
+                <span>${this.formatNumber(metrics.retweet_count || 0)}</span>
+              </div>
+              <div class="tweet-action">
+                <span>❤️</span>
+                <span>${this.formatNumber(metrics.like_count || 0)}</span>
+              </div>
+              <div class="tweet-action">
+                <span>📊</span>
+                <span>${this.formatNumber(metrics.quote_count || 0)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      formatTweetText(text) {
+        text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: #ffd700;">$1</a>');
+        text = text.replace(/#(\w+)/g, '<span style="color: #ffd700; font-weight: bold;">#$1</span>');
+        text = text.replace(/@(\w+)/g, '<span style="color: #ffd700;">@$1</span>');
+        return text;
+      }
+
+      getTimeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+
+        if (diffInSeconds < 60) return 'just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h`;
+        return `${Math.floor(diffInSeconds / 86400)}d`;
+      }
+
+      formatNumber(num) {
+        if (num >= 1000000) {
+          return (num / 1000000).toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+          return (num / 1000).toFixed(1) + 'K';
+        }
+        return num.toString();
+      }
+    }
+
+    async function testSocialFeed() {
+      const resultDiv = document.getElementById('test-result');
+      resultDiv.innerHTML = '<span style="color: #ffd700;">Testing...</span>';
+      
+      try {
+        const socialFeed = new SimpleSocialFeedManager();
+        await socialFeed.initialize();
+        resultDiv.innerHTML = '<span style="color: #4CAF50;">✅ Social feed test successful!</span>';
+      } catch (error) {
+        resultDiv.innerHTML = `<span style="color: #f44336;">❌ Error: ${error.message}</span>`;
+        console.error('Test error:', error);
+      }
+    }
+
+    // Auto-test on page load
+    window.addEventListener('load', async () => {
+      console.log('Page loaded, auto-testing social feed...');
+      await testSocialFeed();
+    });
+  </script>
+</body>
+</html> 

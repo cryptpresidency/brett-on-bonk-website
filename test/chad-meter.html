@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chad Meter - Solana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background: #FFD300;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      padding: 2.5rem 2rem 2rem 2rem;
+      text-align: center;
+      max-width: 400px;
+      color: #fff;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      text-shadow: 3px 3px 0 #000, 0 4px 16px #000;
+      border: 4px solid #fff;
+    }
+    .popup-content img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 1em;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25));
+    }
+    .btn {
+      background: #FFD300;
+      color: #fff;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 16px;
+      padding: 1.2rem 2.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18), 2px 2px 0 #FFD300;
+      text-shadow: 2px 2px 0 #000;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin: 0.5em 0.3em;
+      letter-spacing: 1px;
+      transition: background 0.2s, color 0.2s;
+      outline: none;
+      display: inline-block;
+    }
+    .btn:hover, .btn:focus {
+      background: #fff;
+      color: #FFD300;
+      border: none;
+    }
+    .main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2em;
+    }
+    .status-message {
+      font-size: 1.5em;
+      margin: 1.5em 0 1em 0;
+      text-align: center;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 3px 3px 0 #000, 0 4px 16px #000;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 1em 0;
+    }
+    .input-group input {
+      font-size: 1.1em;
+      padding: 0.5em 1em;
+      border-radius: 12px;
+      border: none;
+      margin-bottom: 1em;
+      width: 320px;
+      max-width: 80vw;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .share-btn {
+      background: #FFD300;
+      color: #fff;
+      font-family: 'Brett', 'Bangers', cursive, sans-serif;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18), 2px 2px 0 #FFD300;
+      padding: 0.7em 2em;
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 #000;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 1em;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .share-btn:hover, .share-btn:focus {
+      background: #fff;
+      color: #FFD300;
+    }
+    .scanning {
+      font-size: 1.3em;
+      color: #fff;
+      text-shadow: 2px 2px 0 #000;
+      margin: 1.5em 0;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      .popup-content {
+        padding: 1em 0.5em;
+      }
+      .input-group input {
+        width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <img src="../assets/brett%20head.png" alt="Brett Head" id="brett-img">
+      <div class="status-message" style="font-size:1.3em; color:#fff; text-shadow:3px 3px 0 #000,0 4px 16px #000;">Congratulations!<br>You have discovered the Chad Meter.<br>Click here to play this message.</div>
+      <button class="btn" id="play-audio">URGENT MESSAGE</button>
+      <br>
+      <button class="btn" id="view-chad">View CHAD Meter</button>
+      <audio id="chad-audio">
+        <source src="../assets/chad%20audio.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </div>
+  <div class="main-content" id="main-content">
+    <div class="input-group" id="token-input-group">
+      <label for="brett-amount" style="font-size:1.2em;">How many Brett tokens do you hold?</label>
+      <input type="number" id="brett-amount" placeholder="Enter Brett token amount" min="0" step="any">
+      <label for="wallet-address" style="font-size:1.1em; margin-top:1em;">Confirm your Solana wallet address</label>
+      <input type="text" id="wallet-address" placeholder="Eg. 3h1... or 9xQeWv...">
+      <button class="btn" id="check-chad">Check CHAD Status</button>
+    </div>
+    <div class="scanning" id="scanning" style="display:none;">Scanning CHAD status…</div>
+    <div id="result-message" style="display:none;"></div>
+    <button class="share-btn" id="share-btn" style="display:none;">Share on X</button>
+    <button class="btn" id="download-certificate" style="display:none;margin-top:0.5em;">Download Certificate</button>
+  </div>
+  <script>
+    // UI Elements
+    const popup = document.getElementById('popup');
+    const viewChadBtn = document.getElementById('view-chad');
+    const playAudioBtn = document.getElementById('play-audio');
+    const chadAudio = document.getElementById('chad-audio');
+    const mainContent = document.getElementById('main-content');
+    const walletInputGroup = document.getElementById('wallet-input-group');
+    const checkChadBtn = document.getElementById('check-chad');
+    const walletInput = document.getElementById('wallet-address');
+    const scanning = document.getElementById('scanning');
+    const resultMessage = document.getElementById('result-message');
+    const shareBtn = document.getElementById('share-btn');
+    const downloadCertificateBtn = document.getElementById('download-certificate');
+
+    // Solana RPC endpoints
+    const RPC_ENDPOINTS = [
+      'https://api.mainnet-beta.solana.com',
+      'https://solana-api.projectserum.com',
+      'https://rpc.ankr.com/solana',
+    ];
+    const BRETT_TOKEN_MINT = 'DxtssVdyYe4wWE5f5zEgx2NqtDFbVL3ABGY62WCycHWg';
+
+    // Pop-up logic
+    viewChadBtn.onclick = () => {
+      popup.style.display = 'none';
+      mainContent.style.display = 'flex';
+    };
+    playAudioBtn.onclick = () => {
+      chadAudio.currentTime = 0;
+      chadAudio.play();
+    };
+
+    // Helper: open X (Twitter) share
+    function openShare(tweet) {
+      const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet);
+      window.open(url, '_blank');
+    }
+
+    // Check CHAD status logic
+    checkChadBtn.onclick = () => {
+      const brettAmount = parseFloat(document.getElementById('brett-amount').value);
+      const wallet = walletInput.value.trim();
+      if (isNaN(brettAmount) || brettAmount < 0) {
+        resultMessage.style.display = 'block';
+        resultMessage.style.color = '#d32f2f';
+        resultMessage.textContent = 'Please enter a valid Brett token amount.';
+        shareBtn.style.display = 'none';
+        return;
+      }
+      if (!wallet || wallet.length < 32) {
+        resultMessage.style.display = 'block';
+        resultMessage.style.color = '#d32f2f';
+        resultMessage.textContent = 'Please confirm your Solana wallet address.';
+        shareBtn.style.display = 'none';
+        return;
+      }
+      // Show fake scanning for 3 seconds
+      resultMessage.style.display = 'none';
+      shareBtn.style.display = 'none';
+      document.getElementById('token-input-group').style.display = 'none';
+      document.getElementById('scanning').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('scanning').style.display = 'none';
+        document.getElementById('token-input-group').style.display = 'flex';
+        resultMessage.style.display = 'block';
+        resultMessage.style.background = 'none';
+        resultMessage.style.boxShadow = 'none';
+        resultMessage.style.border = 'none';
+        shareBtn.style.display = 'inline-block';
+        const downloadBtn = document.getElementById('download-certificate');
+        downloadBtn.style.display = 'inline-block';
+        if (brettAmount === 0) {
+          resultMessage.style.color = '#fff';
+          resultMessage.innerHTML = `<img src="../assets/Crazy Brett.svg" alt="Crazy Brett" style="width:90px;height:90px;vertical-align:middle;display:block;margin:0 auto 1em auto;">🟥<br>You either haven’t bought yet! Or SOLD early.<br><br>If so, use our helpline: <a href='https://t.me/bonkingbrettbot' target='_blank' style='color:#fff;text-decoration:underline;font-weight:bold;'>@bonkingbrettbot</a>`;
+          shareBtn.onclick = () => openShare('I am a loser, who requires help from the bonking Brett helpline @bonkingbrettbot on TG. #ChadMeter #Brett\nCheck out your chad status: ' + window.location.href);
+          downloadBtn.onclick = () => {
+            alert("LOL MATE! YOU AIN'T GET NUTHIN!");
+          };
+        } else if (brettAmount < 500000) {
+          resultMessage.style.color = '#fff';
+          resultMessage.innerHTML = `<img src="../assets/bonked%20brett.svg" alt="Bonked Brett" style="width:90px;height:90px;vertical-align:middle;display:block;margin:0 auto 1em auto;">🟨<br>You are a CHAD ser.<br><br>We appreciate your service. Keep shilling and ape those dips!`;
+          shareBtn.onclick = () => openShare('I am a confirmed Chad by the Chad Meter. Keep shilling. Keep aping. #ChadStatus #BRETT\nCheck out your chad status: ' + window.location.href);
+          downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            link.href = '../assets/certificate%20of%20chadness.png';
+            link.download = 'Certificate of Chadness.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          };
+        } else {
+          resultMessage.style.color = '#fff';
+          resultMessage.innerHTML = `<img src="../assets/Shady Brett.svg" alt="Shady Brett" style="width:90px;height:90px;vertical-align:middle;display:block;margin:0 auto 1em auto;">🟩<br>You are a CHAD Whale! 🐳<br><br>You’re invited to our whale group: <a href='https://t.me/clubofbonk' target='_blank' style='color:#fff;text-decoration:underline;font-weight:bold;'>https://t.me/clubofbonk</a>`;
+          shareBtn.onclick = () => openShare('I am officially a BRETT whale and a proud member of the CLUB OF BONK. #WhaleLife #ClubOfBonk #ChadMeter\nCheck out your chad status: ' + window.location.href);
+          downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            link.href = '../assets/certificate%20of%20whaleness.png';
+            link.download = 'Certificate of Whaleness.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          };
+        }
+      }, 3000);
+    };
+  </script>
+</body>
+</html> 
