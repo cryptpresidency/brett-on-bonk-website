@@ -403,20 +403,26 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (musicState === 'true') {
     isMusicPlaying = true;
-    musicBtn.textContent = '🔊';
+    musicBtn.textContent = '🔇'; // Start with muted icon since autoplay is blocked
     // Try to play music immediately when coming from index page
     bgMusic.play().then(() => {
       console.log('Music started successfully from index page');
+      musicBtn.textContent = '🔊';
     }).catch((error) => {
       console.log('Auto-play prevented, will start on first user interaction:', error);
       // Listen for first user interaction to start music
       const startMusicOnInteraction = () => {
         bgMusic.play().then(() => {
-          updateButton();
+          console.log('Music started on first interaction');
+          musicBtn.textContent = '🔊';
+        }).catch((error) => {
+          console.log('Failed to start music:', error);
         });
         window.removeEventListener('pointerdown', startMusicOnInteraction);
+        window.removeEventListener('click', startMusicOnInteraction);
       };
       window.addEventListener('pointerdown', startMusicOnInteraction);
+      window.addEventListener('click', startMusicOnInteraction);
     });
   } else {
     bgMusic.pause();
@@ -437,13 +443,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (bgMusic.paused) {
       bgMusic.play().then(() => {
         console.log('Music started on button click');
-        updateButton();
+        musicBtn.textContent = '🔊';
+        localStorage.setItem('brettMusicPlaying', 'true');
       }).catch((error) => {
         console.log('Auto-play prevented on button click:', error);
+        musicBtn.textContent = '🔇';
+        localStorage.setItem('brettMusicPlaying', 'false');
       });
     } else {
       bgMusic.pause();
-      updateButton();
+      musicBtn.textContent = '🔇';
+      localStorage.setItem('brettMusicPlaying', 'false');
     }
   });
 
