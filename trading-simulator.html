@@ -392,20 +392,12 @@
       }
     }
     
-    /* Intro Overlay Styles */
-    .intro-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    /* Welcome Section Styles */
+    .welcome-section {
       background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       padding: 2rem;
-      overflow-y: auto;
+      border-radius: 20px;
+      margin-bottom: 2rem;
     }
     
     .intro-content {
@@ -2104,93 +2096,95 @@
   </style>
 </head>
 <body>
-  <!-- Intro Message Overlay -->
-  <div id="intro-overlay" class="intro-overlay">
-    <div class="intro-content">
-      <div class="intro-header">
-        <img src="assets/brett%20head.png" alt="Brett" class="intro-brett-img">
-        <h1 class="intro-title">🎮 BRETT TRADING SIMULATOR</h1>
-      </div>
-      
-      <div class="intro-body">
-        <div class="intro-section">
-          <h2>🐋 Welcome to the Ultimate Brett Trading Experience!</h2>
-          <p>Practice trading BRETT tokens with virtual money in this realistic simulation. Test your skills, compete with others, and become the best Brett trader!</p>
+  <div class="main-content-area" id="trading-platform">
+    <!-- Welcome Section -->
+    <div class="welcome-section section-panel" id="welcome-section">
+      <div class="intro-content">
+        <div class="intro-header">
+          <img src="assets/brett%20head.png" alt="Brett" class="intro-brett-img">
+          <h1 class="intro-title">🎮 BRETT TRADING SIMULATOR</h1>
         </div>
         
-        <div class="intro-section">
-          <h3>🎯 What You Can Do:</h3>
-          <ul>
-            <li>💰 <strong>Trade BRETT tokens</strong> with realistic price movements</li>
-            <li>📈 <strong>Watch live charts</strong> and market news</li>
-            <li>⚡ <strong>Fast forward time</strong> to see dramatic market events</li>
-            <li>🎮 <strong>Play prediction games</strong> to earn bonus money</li>
-            <li>🏆 <strong>Compete on leaderboards</strong> with other traders</li>
-            <li>🐋 <strong>Achieve whale status</strong> and post to X (Twitter)</li>
-            <li>📊 <strong>Track your analytics</strong> and trading performance</li>
-          </ul>
-        </div>
-        
-        <div class="intro-section">
-          <h3>⚠️ Important Notes:</h3>
-          <ul>
-            <li>🎮 This is a <strong>simulation game</strong> - not real trading</li>
-            <li>💰 All money and prices are <strong>virtual/fake</strong></li>
-            <li>📈 Price movements are <strong>randomly generated</strong></li>
-            <li>🎯 Your progress is <strong>saved locally</strong> on your device</li>
-            <li>🐋 Reach $100,000+ to become a <strong>Brett Whale</strong>!</li>
-          </ul>
-        </div>
-        
-        <div class="intro-section">
-          <h3>🎮 Game Features:</h3>
-          <div class="feature-grid">
-            <div class="feature-item">
-              <span class="feature-icon">📊</span>
-              <span class="feature-text">Real-time Charts</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">📰</span>
-              <span class="feature-text">Market News</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">⚡</span>
-              <span class="feature-text">Fast Forward</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🎯</span>
-              <span class="feature-text">Prediction Game</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🏆</span>
-              <span class="feature-text">Leaderboard</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🐋</span>
-              <span class="feature-text">Whale Status</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">📱</span>
-              <span class="feature-text">X Integration</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🔊</span>
-              <span class="feature-text">Sound Effects</span>
+        <div class="intro-body">
+          <div class="intro-section">
+            <h2>🐋 Welcome to the Ultimate Brett Trading Experience!</h2>
+            <p>Practice trading BRETT tokens with virtual money in this realistic simulation. Test your skills, compete with others, and become the best Brett trader!</p>
+          </div>
+          
+          <div class="intro-section">
+            <h3>🎯 What You Can Do:</h3>
+            <ul>
+              <li>💰 <strong>Trade BRETT tokens</strong> with realistic price movements</li>
+              <li>📈 <strong>Watch live charts</strong> and market news</li>
+              <li>⚡ <strong>Fast forward time</strong> to see dramatic market events</li>
+              <li>🎮 <strong>Play prediction games</strong> to earn bonus money</li>
+              <li>🏆 <strong>Compete on leaderboards</strong> with other traders</li>
+              <li>🐋 <strong>Achieve whale status</strong> and post to X (Twitter)</li>
+              <li>📊 <strong>Track your analytics</strong> and trading performance</li>
+            </ul>
+          </div>
+          
+          <div class="intro-section">
+            <h3>⚠️ Important Notes:</h3>
+            <ul>
+              <li>🎮 This is a <strong>simulation game</strong> - not real trading</li>
+              <li>💰 All money and prices are <strong>virtual/fake</strong></li>
+              <li>📈 Price movements are <strong>randomly generated</strong></li>
+              <li>🎯 Your progress is <strong>saved locally</strong> on your device</li>
+              <li>🐋 Reach $100,000+ to become a <strong>Brett Whale</strong>!</li>
+            </ul>
+          </div>
+          
+          <div class="intro-section">
+            <h3>🎮 Game Features:</h3>
+            <div class="feature-grid">
+              <div class="feature-item">
+                <span class="feature-icon">📊</span>
+                <span class="feature-text">Real-time Charts</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">📰</span>
+                <span class="feature-text">Market News</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <span class="feature-text">Fast Forward</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <span class="feature-text">Prediction Game</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🏆</span>
+                <span class="feature-text">Leaderboard</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🐋</span>
+                <span class="feature-text">Whale Status</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">📱</span>
+                <span class="feature-text">X Integration</span>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🔊</span>
+                <span class="feature-text">Sound Effects</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="intro-footer">
-        <button id="start-trading-btn" class="start-trading-btn">
-          🚀 START TRADING 🚀
-        </button>
-        <p class="intro-note">Click to begin your Brett trading journey!</p>
+        
+        <div class="intro-footer">
+          <button id="start-trading-btn" class="start-trading-btn">
+            🚀 START TRADING 🚀
+          </button>
+          <p class="intro-note">Click to begin your Brett trading journey!</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="main-content-area" id="trading-platform" style="display: none;">
+    <!-- Trading Interface (Hidden initially) -->
+    <div class="trading-interface" id="trading-interface" style="display: none;">
     <!-- Header -->
     <div class="trading-header section-panel">
       <h1 class="trading-title">🎮 BRETT TRADING SIMULATOR</h1>
@@ -2428,6 +2422,8 @@
           <!-- Trades will be populated here -->
         </div>
       </div>
+    </div>
+
     </div>
 
     <!-- Leaderboard Section -->
@@ -4061,21 +4057,21 @@
       
       startTrading() {
         console.log('startTrading called');
-        const introOverlay = document.getElementById('intro-overlay');
-        const tradingPlatform = document.getElementById('trading-platform');
+        const welcomeSection = document.getElementById('welcome-section');
+        const tradingInterface = document.getElementById('trading-interface');
         
-        console.log('introOverlay:', introOverlay);
-        console.log('tradingPlatform:', tradingPlatform);
+        console.log('welcomeSection:', welcomeSection);
+        console.log('tradingInterface:', tradingInterface);
         
-        if (!introOverlay || !tradingPlatform) {
-          console.error('intro-overlay or trading-platform not found');
+        if (!welcomeSection || !tradingInterface) {
+          console.error('welcome-section or trading-interface not found');
           alert('Required elements missing. Please refresh the page.');
           return;
         }
         
-        // Hide intro overlay and show trading platform
-        introOverlay.style.display = 'none';
-        tradingPlatform.style.display = 'block';
+        // Hide welcome section and show trading interface
+        welcomeSection.style.display = 'none';
+        tradingInterface.style.display = 'block';
         
         // Initialize the trading simulator
         this.init();
