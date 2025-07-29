@@ -4063,9 +4063,13 @@
         console.log('startTrading called');
         const introOverlay = document.getElementById('intro-overlay');
         const tradingPlatform = document.getElementById('trading-platform');
+        
+        console.log('introOverlay:', introOverlay);
+        console.log('tradingPlatform:', tradingPlatform);
+        
         if (!introOverlay || !tradingPlatform) {
           console.error('intro-overlay or trading-platform not found');
-          showSimulatorError('Required elements missing.');
+          alert('Required elements missing. Please refresh the page.');
           return;
         }
         
@@ -4156,22 +4160,26 @@
     // Initialize when page loads
     document.addEventListener('DOMContentLoaded', () => {
       console.log('DOMContentLoaded fired');
+      
+      // Create trading simulator instance
+      window.tradingSimulator = new TradingSimulator();
+      console.log('TradingSimulator constructed');
+      
       const startBtn = document.getElementById('start-trading-btn');
       if (!startBtn) {
         console.error('start-trading-btn not found');
-        showSimulatorError('Start button not found.');
+        alert('Start button not found. Please refresh the page.');
         return;
       }
+      
       console.log('Attaching start button listener');
       startBtn.addEventListener('click', () => {
         console.log('Start button clicked');
         try {
-          window.tradingSimulator = new TradingSimulator();
-          console.log('TradingSimulator constructed');
           window.tradingSimulator.startTrading();
         } catch (e) {
-          console.error('Error constructing TradingSimulator:', e);
-          showSimulatorError(e.message);
+          console.error('Error starting trading:', e);
+          alert('Error starting trading: ' + e.message);
         }
       });
     });
@@ -4235,16 +4243,6 @@
     eventModal.style.display = 'none';
     eventModal.id = 'event-modal';
     document.body.appendChild(eventModal);
-
-    // In TradingSimulator class, at the start of startTrading():
-    console.log('startTrading called');
-    const introOverlay = document.getElementById('intro-overlay');
-    const tradingPlatform = document.getElementById('trading-platform');
-    if (!introOverlay || !tradingPlatform) {
-      console.error('intro-overlay or trading-platform not found');
-      showSimulatorError('Required elements missing.');
-      return;
-    }
   </script>
 </body>
 </html> 
