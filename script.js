@@ -404,11 +404,14 @@ document.addEventListener('DOMContentLoaded', function() {
   if (musicState === 'true') {
     isMusicPlaying = true;
     musicBtn.textContent = '🔊';
-    bgMusic.play().catch(() => {
-      // Auto-play prevented, keep muted state
-      isMusicPlaying = false;
+    // Try to play music immediately when coming from index page
+    bgMusic.play().then(() => {
+      console.log('Music started successfully from index page');
+    }).catch((error) => {
+      console.log('Auto-play prevented, user needs to interact first:', error);
+      // Keep the state as true so music will start on first user interaction
+      isMusicPlaying = true;
       musicBtn.textContent = '🔇';
-      localStorage.setItem('brettMusicPlaying', 'false');
     });
   } else {
     bgMusic.pause();
@@ -427,13 +430,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   musicBtn.addEventListener('click', function() {
     if (bgMusic.paused) {
-      bgMusic.play().catch(() => {
-        console.log('Auto-play prevented');
+      bgMusic.play().then(() => {
+        console.log('Music started on button click');
+        updateButton();
+      }).catch((error) => {
+        console.log('Auto-play prevented on button click:', error);
       });
     } else {
       bgMusic.pause();
+      updateButton();
     }
-    updateButton();
   });
 
   // Optional: update button if user interacts with audio controls elsewhere
